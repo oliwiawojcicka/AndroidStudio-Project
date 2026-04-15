@@ -25,20 +25,17 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        // 1. Fix the "System Bars" listener (keep this for the layout)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.emailInput), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // 2. Initialize Firebase and UI Elements
         mAuth = FirebaseAuth.getInstance();
         emailField = findViewById(R.id.emailInput);
         passwordField = findViewById(R.id.passwordInput);
         loginBtn = findViewById(R.id.loginBtn);
 
-        // 3. Add the Click Listener (The "Brain" of the button)
         loginBtn.setOnClickListener(v -> {
             String email = emailField.getText().toString().trim();
             String password = passwordField.getText().toString().trim();
@@ -48,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            // This is where the magic happens
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
