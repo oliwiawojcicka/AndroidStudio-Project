@@ -13,6 +13,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.salle.grup17.api.RetrofitClient;
+import com.salle.grup17.models.ApiResponse;
+import com.salle.grup17.models.Character;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,12 +32,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        RetrofitClient.getApi().getCharacters(1).enqueue(new Callback<ApiResponse<Character>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Character>> call, Response<ApiResponse<Character>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(MainActivity.this,
+                            "Download characters: " + response.body().getResults().size(),
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(MainActivity.this,
+                            "API error " + response.code(),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Character>> call, Throwable t) {
+                Toast.makeText(MainActivity.this,
+                        "Connection error: " + t.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.emailInput), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
 
         mAuth = FirebaseAuth.getInstance();
 
