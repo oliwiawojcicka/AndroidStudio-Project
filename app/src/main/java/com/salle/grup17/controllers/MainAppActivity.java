@@ -3,37 +3,52 @@ package com.salle.grup17.controllers;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.salle.grup17.R;
-import android.widget.Button;
-
 import androidx.fragment.app.Fragment;
 
-import com.salle.grup17.views.fragments.HomeFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.salle.grup17.R;
 import com.salle.grup17.views.fragments.FavoritesFragment;
-import com.salle.grup17.views.fragments.QuizFragment;
+import com.salle.grup17.views.fragments.HomeFragment;
 import com.salle.grup17.views.fragments.ProfileFragment;
+import com.salle.grup17.views.fragments.QuizFragment;
+// import com.salle.grup17.views.fragments.DiscoverFragment;
+
 public class MainAppActivity extends AppCompatActivity {
 
-    Button homeBtn, favBtn, quizBtn, profileBtn;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_app);
 
-        homeBtn = findViewById(R.id.homeBtn);
-        favBtn = findViewById(R.id.favBtn);
-        quizBtn = findViewById(R.id.quizBtn);
-        profileBtn = findViewById(R.id.profileBtn);
-
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         loadFragment(new HomeFragment());
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
-        homeBtn.setOnClickListener(v -> loadFragment(new HomeFragment()));
-        favBtn.setOnClickListener(v -> loadFragment(new FavoritesFragment()));
-        quizBtn.setOnClickListener(v -> loadFragment(new QuizFragment()));
-        profileBtn.setOnClickListener(v -> loadFragment(new ProfileFragment()));
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.nav_home) {
+                loadFragment(new HomeFragment());
+                return true;
+            } else if (id == R.id.nav_favorites) {
+                loadFragment(new FavoritesFragment());
+                return true;
+            } else if (id == R.id.nav_quiz) {
+                loadFragment(new QuizFragment());
+                return true;
+            } else if (id == R.id.nav_discover) {
+                // loadFragment(new DiscoverFragment());
+                return true;
+            } else if (id == R.id.nav_profile) {
+                loadFragment(new ProfileFragment());
+                return true;
+            }
+
+            return false;
+        });
     }
 
     private void loadFragment(Fragment fragment) {
