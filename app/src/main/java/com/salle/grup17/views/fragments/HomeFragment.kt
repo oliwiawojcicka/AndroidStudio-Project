@@ -1,4 +1,4 @@
-package com.salle.grup17.fragments
+package com.salle.grup17.views.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.salle.grup17.R
-import com.salle.grup17.adapters.CharacterAdapter
+import com.salle.grup17.views.adapters.CharacterAdapter
 import com.salle.grup17.api.RetrofitClient
 import com.salle.grup17.models.ApiResponse
 import com.salle.grup17.models.Character

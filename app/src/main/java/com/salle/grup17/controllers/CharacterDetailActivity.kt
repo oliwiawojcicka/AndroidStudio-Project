@@ -1,4 +1,4 @@
-package com.salle.grup17.activities
+package com.salle.grup17.controllers
 
 import android.os.Bundle
 import android.widget.ImageView

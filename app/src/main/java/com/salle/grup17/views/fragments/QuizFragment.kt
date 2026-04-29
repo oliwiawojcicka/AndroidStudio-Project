@@ -1,4 +1,4 @@
-package com.salle.grup17.fragments
+package com.salle.grup17.views.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

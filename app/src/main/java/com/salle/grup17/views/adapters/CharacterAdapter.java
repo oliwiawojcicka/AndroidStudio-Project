@@ -1,4 +1,4 @@
-package com.salle.grup17.adapters;
+package com.salle.grup17.views.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.salle.grup17.R;
-import com.salle.grup17.activities.CharacterDetailActivity;
+import com.salle.grup17.controllers.CharacterDetailActivity;
 import com.salle.grup17.models.Character;
 
 import java.util.List;

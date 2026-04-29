@@ -1,4 +1,4 @@
-package com.salle.grup17.activities;
+package com.salle.grup17.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;

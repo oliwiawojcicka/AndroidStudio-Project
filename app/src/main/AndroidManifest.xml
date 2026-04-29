@@ -14,15 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MultiverseExplorer">
         <activity
-            android:name=".activities.CharacterDetailActivity"
+            android:name=".controllers.CharacterDetailActivity"
             android:exported="false" />
 
         <activity
-            android:name=".activities.MainAppActivity"
+            android:name=".controllers.MainAppActivity"
             android:exported="false" />
 
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".controllers.LoginActivity"
             android:exported="true">
 
 

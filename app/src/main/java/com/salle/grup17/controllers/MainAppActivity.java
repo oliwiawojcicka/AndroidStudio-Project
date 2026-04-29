@@ -1,4 +1,4 @@
-package com.salle.grup17.activities;
+package com.salle.grup17.controllers;
 
 import android.os.Bundle;
 
@@ -9,10 +9,10 @@ import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
-import com.salle.grup17.fragments.HomeFragment;
-import com.salle.grup17.fragments.FavoritesFragment;
-import com.salle.grup17.fragments.QuizFragment;
-import com.salle.grup17.fragments.ProfileFragment;
+import com.salle.grup17.views.fragments.HomeFragment;
+import com.salle.grup17.views.fragments.FavoritesFragment;
+import com.salle.grup17.views.fragments.QuizFragment;
+import com.salle.grup17.views.fragments.ProfileFragment;
 public class MainAppActivity extends AppCompatActivity {
 
     Button homeBtn, favBtn, quizBtn, profileBtn;
