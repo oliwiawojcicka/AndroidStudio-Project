@@ -7,11 +7,12 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.salle.grup17.R;
+import com.salle.grup17.views.fragments.DiscoverFragment;
 import com.salle.grup17.views.fragments.FavoritesFragment;
 import com.salle.grup17.views.fragments.HomeFragment;
 import com.salle.grup17.views.fragments.ProfileFragment;
 import com.salle.grup17.views.fragments.QuizFragment;
-// import com.salle.grup17.views.fragments.DiscoverFragment;
+
 
 public class MainAppActivity extends AppCompatActivity {
 
@@ -40,7 +41,7 @@ public class MainAppActivity extends AppCompatActivity {
                 loadFragment(new QuizFragment());
                 return true;
             } else if (id == R.id.nav_discover) {
-                // loadFragment(new DiscoverFragment());
+                loadFragment(new DiscoverFragment());
                 return true;
             } else if (id == R.id.nav_profile) {
                 loadFragment(new ProfileFragment());
