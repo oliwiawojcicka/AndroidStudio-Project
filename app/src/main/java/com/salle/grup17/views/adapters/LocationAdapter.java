@@ -1,4 +1,4 @@
-package com.salle.grup17.adapters;
+package com.salle.grup17.views.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
