@@ -1,9 +1,12 @@
 package com.salle.grup17.views.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +29,7 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
+    private EditText searchEditText;
     private RecyclerView charactersRecyclerView;
     private CharacterAdapter characterAdapter;
     private LinearLayoutManager layoutManager;
@@ -35,6 +39,7 @@ public class HomeFragment extends Fragment {
     private int currentPage = 1;
     private boolean isLoading = false;
     private boolean hasMorePages = true;
+    private String currentSearch = "";
 
     public HomeFragment() {
     }
@@ -48,6 +53,7 @@ public class HomeFragment extends Fragment {
     ) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        searchEditText = view.findViewById(R.id.searchEditText);
         charactersRecyclerView = view.findViewById(R.id.charactersRecyclerView);
 
         layoutManager = new LinearLayoutManager(requireContext());
@@ -56,11 +62,30 @@ public class HomeFragment extends Fragment {
         characterAdapter = new CharacterAdapter(characterList);
         charactersRecyclerView.setAdapter(characterAdapter);
 
+        setupSearch();
         setupPagination();
 
-        loadCharacters(currentPage);
+        resetAndLoadCharacters();
 
         return view;
+    }
+
+    private void setupSearch() {
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                currentSearch = s.toString().trim();
+                resetAndLoadCharacters();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     private void setupPagination() {
@@ -92,57 +117,75 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private void resetAndLoadCharacters() {
+        currentPage = 1;
+        hasMorePages = true;
+        characterList.clear();
+        characterAdapter.notifyDataSetChanged();
+        loadCharacters(currentPage);
+    }
+
     private void loadCharacters(int page) {
         isLoading = true;
 
-        RetrofitClient.getApi().getCharacters(page)
-                .enqueue(new Callback<ApiResponse<Character>>() {
-                    @Override
-                    public void onResponse(
-                            @NonNull Call<ApiResponse<Character>> call,
-                            @NonNull Response<ApiResponse<Character>> response
-                    ) {
-                        isLoading = false;
+        Call<ApiResponse<Character>> call;
 
-                        if (response.isSuccessful() && response.body() != null) {
-                            ArrayList<Character> newCharacters =
-                                    new ArrayList<>(response.body().getResults());
+        if (currentSearch.isEmpty()) {
+            call = RetrofitClient.getApi().getCharacters(page);
+        } else {
+            call = RetrofitClient.getApi().searchCharacters(currentSearch, page);
+        }
 
-                            int oldSize = characterList.size();
-                            characterList.addAll(newCharacters);
+        call.enqueue(new Callback<ApiResponse<Character>>() {
+            @Override
+            public void onResponse(
+                    @NonNull Call<ApiResponse<Character>> call,
+                    @NonNull Response<ApiResponse<Character>> response
+            ) {
+                isLoading = false;
 
-                            characterAdapter.notifyItemRangeInserted(
-                                    oldSize,
-                                    newCharacters.size()
-                            );
+                if (response.isSuccessful() && response.body() != null) {
+                    ArrayList<Character> newCharacters =
+                            new ArrayList<>(response.body().getResults());
 
-                            if (newCharacters.isEmpty()) {
-                                hasMorePages = false;
-                            }
+                    int oldSize = characterList.size();
+                    characterList.addAll(newCharacters);
 
-                        } else {
-                            hasMorePages = false;
-                            Toast.makeText(
-                                    requireContext(),
-                                    "No more characters or API error",
-                                    Toast.LENGTH_SHORT
-                            ).show();
-                        }
+                    characterAdapter.notifyItemRangeInserted(
+                            oldSize,
+                            newCharacters.size()
+                    );
+
+                    if (newCharacters.isEmpty()) {
+                        hasMorePages = false;
                     }
 
-                    @Override
-                    public void onFailure(
-                            @NonNull Call<ApiResponse<Character>> call,
-                            @NonNull Throwable t
-                    ) {
-                        isLoading = false;
+                } else {
+                    hasMorePages = false;
 
+                    if (characterList.isEmpty()) {
                         Toast.makeText(
                                 requireContext(),
-                                "Connection error: " + t.getMessage(),
-                                Toast.LENGTH_LONG
+                                "No characters found",
+                                Toast.LENGTH_SHORT
                         ).show();
                     }
-                });
+                }
+            }
+
+            @Override
+            public void onFailure(
+                    @NonNull Call<ApiResponse<Character>> call,
+                    @NonNull Throwable t
+            ) {
+                isLoading = false;
+
+                Toast.makeText(
+                        requireContext(),
+                        "Connection error: " + t.getMessage(),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
     }
 }

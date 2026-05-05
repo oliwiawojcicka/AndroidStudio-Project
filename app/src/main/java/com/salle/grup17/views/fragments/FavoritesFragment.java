@@ -4,13 +4,25 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.salle.grup17.R;
+import com.salle.grup17.models.Character;
+import com.salle.grup17.views.adapters.CharacterAdapter;
+
+import java.util.ArrayList;
 
 public class FavoritesFragment extends Fragment {
+
+    private RecyclerView favoritesRecyclerView;
+    private CharacterAdapter characterAdapter;
+    private final ArrayList<Character> favoriteList = new ArrayList<>();
 
     public FavoritesFragment() {
     }
@@ -22,13 +34,16 @@ public class FavoritesFragment extends Fragment {
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState
     ) {
-        TextView textView = new TextView(requireContext());
-        textView.setText("Favorites screen\nTo be implemented");
-        textView.setTextSize(24);
-        textView.setGravity(android.view.Gravity.CENTER);
-        textView.setTextColor(android.graphics.Color.WHITE);
-        textView.setBackgroundColor(android.graphics.Color.rgb(21, 23, 40));
+        View view = inflater.inflate(R.layout.fragment_favorites, container, false);
 
-        return textView;
+        favoritesRecyclerView = view.findViewById(R.id.favoritesRecyclerView);
+        favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        characterAdapter = new CharacterAdapter(favoriteList);
+        favoritesRecyclerView.setAdapter(characterAdapter);
+
+        Toast.makeText(requireContext(), "Favorites layout loaded", Toast.LENGTH_SHORT).show();
+
+        return view;
     }
 }
