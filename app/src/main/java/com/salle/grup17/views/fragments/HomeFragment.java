@@ -28,7 +28,13 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView charactersRecyclerView;
     private CharacterAdapter characterAdapter;
+    private LinearLayoutManager layoutManager;
+
     private final ArrayList<Character> characterList = new ArrayList<>();
+
+    private int currentPage = 1;
+    private boolean isLoading = false;
+    private boolean hasMorePages = true;
 
     public HomeFragment() {
     }
@@ -43,30 +49,84 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         charactersRecyclerView = view.findViewById(R.id.charactersRecyclerView);
-        charactersRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        layoutManager = new LinearLayoutManager(requireContext());
+        charactersRecyclerView.setLayoutManager(layoutManager);
 
         characterAdapter = new CharacterAdapter(characterList);
         charactersRecyclerView.setAdapter(characterAdapter);
 
-        loadCharacters();
+        setupPagination();
+
+        loadCharacters(currentPage);
 
         return view;
     }
 
-    private void loadCharacters() {
-        RetrofitClient.getApi().getCharacters(1)
+    private void setupPagination() {
+        charactersRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(
+                    @NonNull RecyclerView recyclerView,
+                    int dx,
+                    int dy
+            ) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy <= 0) {
+                    return;
+                }
+
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                boolean isAtEnd =
+                        visibleItemCount + firstVisibleItemPosition >= totalItemCount - 3;
+
+                if (!isLoading && hasMorePages && isAtEnd) {
+                    currentPage++;
+                    loadCharacters(currentPage);
+                }
+            }
+        });
+    }
+
+    private void loadCharacters(int page) {
+        isLoading = true;
+
+        RetrofitClient.getApi().getCharacters(page)
                 .enqueue(new Callback<ApiResponse<Character>>() {
                     @Override
                     public void onResponse(
                             @NonNull Call<ApiResponse<Character>> call,
                             @NonNull Response<ApiResponse<Character>> response
                     ) {
+                        isLoading = false;
+
                         if (response.isSuccessful() && response.body() != null) {
-                            characterList.clear();
-                            characterList.addAll(response.body().getResults());
-                            characterAdapter.notifyDataSetChanged();
+                            ArrayList<Character> newCharacters =
+                                    new ArrayList<>(response.body().getResults());
+
+                            int oldSize = characterList.size();
+                            characterList.addAll(newCharacters);
+
+                            characterAdapter.notifyItemRangeInserted(
+                                    oldSize,
+                                    newCharacters.size()
+                            );
+
+                            if (newCharacters.isEmpty()) {
+                                hasMorePages = false;
+                            }
+
                         } else {
-                            Toast.makeText(requireContext(), "API error", Toast.LENGTH_SHORT).show();
+                            hasMorePages = false;
+                            Toast.makeText(
+                                    requireContext(),
+                                    "No more characters or API error",
+                                    Toast.LENGTH_SHORT
+                            ).show();
                         }
                     }
 
@@ -75,6 +135,8 @@ public class HomeFragment extends Fragment {
                             @NonNull Call<ApiResponse<Character>> call,
                             @NonNull Throwable t
                     ) {
+                        isLoading = false;
+
                         Toast.makeText(
                                 requireContext(),
                                 "Connection error: " + t.getMessage(),
