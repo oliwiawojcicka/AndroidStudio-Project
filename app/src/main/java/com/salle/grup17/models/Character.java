@@ -11,6 +11,17 @@ public class Character {
     private Origin origin;
     private LocationInfo location;
 
+    public Character() {
+    }
+
+    public Character(int id, String name, String status, String species, String image) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.species = species;
+        this.image = image;
+    }
+
     public int getId() {
         return id;
     }

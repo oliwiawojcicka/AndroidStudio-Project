@@ -10,9 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.salle.grup17.R;
 import com.salle.grup17.api.RetrofitClient;
 import com.salle.grup17.models.Character;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,6 +29,13 @@ public class CharacterDetailActivity extends AppCompatActivity {
     private TextView detailName;
     private TextView detailInfo;
     private Button backBtn;
+    private Button favoriteBtn;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
+
+    private Character currentCharacter;
+    private boolean isFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +46,25 @@ public class CharacterDetailActivity extends AppCompatActivity {
         detailName = findViewById(R.id.detailName);
         detailInfo = findViewById(R.id.detailInfo);
         backBtn = findViewById(R.id.backBtn);
+        favoriteBtn = findViewById(R.id.favoriteBtn);
+
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         backBtn.setOnClickListener(v -> finish());
+
+        favoriteBtn.setOnClickListener(v -> {
+            if (currentCharacter == null) {
+                Toast.makeText(this, "Character not loaded yet", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (isFavorite) {
+                removeFromFavorites();
+            } else {
+                addToFavorites();
+            }
+        });
 
         int characterId = getIntent().getIntExtra("character_id", -1);
 
@@ -57,38 +86,41 @@ public class CharacterDetailActivity extends AppCompatActivity {
                             @NonNull Response<Character> response
                     ) {
                         if (response.isSuccessful() && response.body() != null) {
-                            Character character = response.body();
+                            currentCharacter = response.body();
 
-                            detailName.setText(character.getName());
+                            detailName.setText(currentCharacter.getName());
 
-                            String type = character.getType();
+                            String type = currentCharacter.getType();
                             if (type == null || type.isEmpty()) {
                                 type = "Unknown";
                             }
 
                             String originName = "Unknown";
-                            if (character.getOrigin() != null && character.getOrigin().getName() != null) {
-                                originName = character.getOrigin().getName();
+                            if (currentCharacter.getOrigin() != null && currentCharacter.getOrigin().getName() != null) {
+                                originName = currentCharacter.getOrigin().getName();
                             }
 
                             String locationName = "Unknown";
-                            if (character.getLocation() != null && character.getLocation().getName() != null) {
-                                locationName = character.getLocation().getName();
+                            if (currentCharacter.getLocation() != null && currentCharacter.getLocation().getName() != null) {
+                                locationName = currentCharacter.getLocation().getName();
                             }
 
                             String info =
-                                    "Status: " + character.getStatus() + "\n" +
-                                            "Species: " + character.getSpecies() + "\n" +
+                                    "Status: " + currentCharacter.getStatus() + "\n" +
+                                            "Species: " + currentCharacter.getSpecies() + "\n" +
                                             "Type: " + type + "\n" +
-                                            "Gender: " + character.getGender() + "\n" +
+                                            "Gender: " + currentCharacter.getGender() + "\n" +
                                             "Origin: " + originName + "\n" +
                                             "Location: " + locationName;
 
                             detailInfo.setText(info);
 
                             Glide.with(CharacterDetailActivity.this)
-                                    .load(character.getImage())
+                                    .load(currentCharacter.getImage())
                                     .into(detailImage);
+
+                            checkIfFavorite();
+
                         } else {
                             Toast.makeText(
                                     CharacterDetailActivity.this,
@@ -110,5 +142,96 @@ public class CharacterDetailActivity extends AppCompatActivity {
                         ).show();
                     }
                 });
+    }
+
+    private String getUserId() {
+        if (auth.getCurrentUser() == null) {
+            return null;
+        }
+        return auth.getCurrentUser().getUid();
+    }
+
+    private void checkIfFavorite() {
+        String userId = getUserId();
+
+        if (userId == null || currentCharacter == null) {
+            favoriteBtn.setEnabled(false);
+            return;
+        }
+
+        db.collection("users")
+                .document(userId)
+                .collection("favorites")
+                .document(String.valueOf(currentCharacter.getId()))
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    isFavorite = documentSnapshot.exists();
+                    updateFavoriteButton();
+                });
+    }
+
+    private void addToFavorites() {
+        String userId = getUserId();
+
+        if (userId == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Map<String, Object> favorite = new HashMap<>();
+        favorite.put("id", currentCharacter.getId());
+        favorite.put("name", currentCharacter.getName());
+        favorite.put("status", currentCharacter.getStatus());
+        favorite.put("species", currentCharacter.getSpecies());
+        favorite.put("image", currentCharacter.getImage());
+
+        db.collection("users")
+                .document(userId)
+                .collection("favorites")
+                .document(String.valueOf(currentCharacter.getId()))
+                .set(favorite)
+                .addOnSuccessListener(unused -> {
+                    isFavorite = true;
+                    updateFavoriteButton();
+                    Toast.makeText(this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> Toast.makeText(
+                        this,
+                        "Error adding favorite",
+                        Toast.LENGTH_SHORT
+                ).show());
+    }
+
+    private void removeFromFavorites() {
+        String userId = getUserId();
+
+        if (userId == null) {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        db.collection("users")
+                .document(userId)
+                .collection("favorites")
+                .document(String.valueOf(currentCharacter.getId()))
+                .delete()
+                .addOnSuccessListener(unused -> {
+                    isFavorite = false;
+                    updateFavoriteButton();
+                    Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> Toast.makeText(
+                        this,
+                        "Error removing favorite",
+                        Toast.LENGTH_SHORT
+                ).show());
+    }
+
+    private void updateFavoriteButton() {
+        if (isFavorite) {
+            favoriteBtn.setText("Remove from favorites");
+        } else {
+            favoriteBtn.setText("Add to favorites");
+        }
     }
 }

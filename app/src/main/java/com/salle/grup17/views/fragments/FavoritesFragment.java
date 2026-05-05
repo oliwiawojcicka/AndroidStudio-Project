@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.salle.grup17.R;
 import com.salle.grup17.models.Character;
 import com.salle.grup17.views.adapters.CharacterAdapter;
@@ -23,6 +25,9 @@ public class FavoritesFragment extends Fragment {
     private RecyclerView favoritesRecyclerView;
     private CharacterAdapter characterAdapter;
     private final ArrayList<Character> favoriteList = new ArrayList<>();
+
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
 
     public FavoritesFragment() {
     }
@@ -42,8 +47,55 @@ public class FavoritesFragment extends Fragment {
         characterAdapter = new CharacterAdapter(favoriteList);
         favoritesRecyclerView.setAdapter(characterAdapter);
 
-        Toast.makeText(requireContext(), "Favorites layout loaded", Toast.LENGTH_SHORT).show();
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+
+        loadFavorites();
 
         return view;
+    }
+
+    private void loadFavorites() {
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = auth.getCurrentUser().getUid();
+
+        db.collection("users")
+                .document(userId)
+                .collection("favorites")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    favoriteList.clear();
+
+                    for (com.google.firebase.firestore.QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Long idLong = document.getLong("id");
+                        String name = document.getString("name");
+                        String status = document.getString("status");
+                        String species = document.getString("species");
+                        String image = document.getString("image");
+
+                        if (idLong != null && name != null) {
+                            Character character = new Character(
+                                    idLong.intValue(),
+                                    name,
+                                    status,
+                                    species,
+                                    image
+                            );
+
+                            favoriteList.add(character);
+                        }
+                    }
+
+                    characterAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> Toast.makeText(
+                        requireContext(),
+                        "Error loading favorites",
+                        Toast.LENGTH_SHORT
+                ).show());
     }
 }
