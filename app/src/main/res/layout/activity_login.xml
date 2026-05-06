@@ -3,31 +3,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:gravity="center_vertical"
+    android:padding="32dp"
+    android:background="#0D1B2A">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Multiverse Explorer"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="#A8FF3E"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Explore the infinite dimensions"
+        android:textSize="13sp"
+        android:textColor="#8899AA"
+        android:layout_marginBottom="40dp" />
 
     <EditText
         android:id="@+id/emailInput"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:hint="Email"
-        android:inputType="textEmailAddress" />
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@android:drawable/edit_text"
+        android:backgroundTint="#1C2B3A"
+        android:inputType="textEmailAddress"
+        android:layout_marginBottom="12dp" />
 
     <EditText
         android:id="@+id/passwordInput"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@android:drawable/edit_text"
+        android:backgroundTint="#1C2B3A"
+        android:inputType="textPassword"
+        android:layout_marginBottom="28dp" />
 
     <Button
         android:id="@+id/loginBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login" />
+        android:layout_height="52dp"
+        android:text="Login"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#1A2A0A"
+        android:backgroundTint="#A8FF3E"
+        android:layout_marginBottom="12dp" />
 
     <Button
         android:id="@+id/registerBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Register" />
+        android:layout_height="52dp"
+        android:text="Register"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#1C2B3A" />
+
 </LinearLayout>
