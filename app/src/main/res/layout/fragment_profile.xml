@@ -1,15 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.fragments.ProfileFragment">
+    android:background="#151728">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:gravity="center"
-        android:text="PROFILE"
-        android:textSize="24sp" />
+        android:padding="32dp">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_launcher_foreground"
+            android:background="#2A2D45"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logged in as"
+            android:textColor="#AAAAAA"
+            android:textSize="14sp"
+            android:layout_marginBottom="6dp" />
+
+        <TextView
+            android:id="@+id/profileEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="user@email.com"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="40dp" />
+
+        <!-- Zmiana hasła -->
+        <Button
+            android:id="@+id/changePasswordBtn"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:text="Change Password"
+            android:backgroundTint="#2A2D45"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Zmiana emaila -->
+        <Button
+            android:id="@+id/changeEmailBtn"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:text="Change Email"
+            android:backgroundTint="#2A2D45"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Logout -->
+        <Button
+            android:id="@+id/logoutBtn"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:text="Log Out"
+            android:backgroundTint="#E53935"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Usuń konto -->
+        <Button
+            android:id="@+id/deleteAccountBtn"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:text="Delete Account"
+            android:backgroundTint="#B71C1C"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+</ScrollView>
