@@ -11,59 +11,62 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Multiverse Explorer"
+        android:text="Create Account"
         android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="#A8FF3E"
         android:layout_marginBottom="8dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Explore the infinite dimensions"
-        android:textSize="13sp"
-        android:textColor="#8899AA"
-        android:layout_marginBottom="40dp" />
-
     <EditText
-        android:id="@+id/emailInput"
+        android:id="@+id/registerEmailInput"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="52dp"
         android:hint="Email"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        android:textSize="16sp"
-        android:gravity="center_vertical"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
+        android:textSize="15sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:background="@drawable/edit_text_bg"
+        android:backgroundTint="#1C2B3A"
         android:inputType="textEmailAddress"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="12dp" />
 
     <EditText
-        android:id="@+id/passwordInput"
+        android:id="@+id/registerPasswordInput"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="52dp"
         android:hint="Password"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        android:textSize="16sp"
-        android:gravity="center_vertical"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
+        android:textSize="15sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:background="@drawable/edit_text_bg"
+        android:backgroundTint="#1C2B3A"
         android:inputType="textPassword"
-        android:layout_marginBottom="28dp" />
-    <Button
-        android:id="@+id/loginBtn"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/confirmPasswordInput"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:text="Login"
+        android:hint="Confirm password"
+        android:textColorHint="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:background="@drawable/edit_text_bg"
+        android:backgroundTint="#1C2B3A"
+        android:inputType="textPassword"
+        android:layout_marginBottom="28dp" />
+
+    <Button
+        android:id="@+id/createAccountBtn"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="Create Account"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="#1A2A0A"
@@ -71,10 +74,10 @@
         android:layout_marginBottom="12dp" />
 
     <Button
-        android:id="@+id/registerBtn"
+        android:id="@+id/backToLoginBtn"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:text="Register"
+        android:text="Back to login"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
