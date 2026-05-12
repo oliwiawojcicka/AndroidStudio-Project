@@ -2,19 +2,32 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#151728"
-    android:padding="24dp">
+    android:background="#151728">
 
+    <!-- HOME QUIZ SCREEN -->
     <LinearLayout
         android:id="@+id/homeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingTop="85dp"
+        android:paddingEnd="24dp">
+
+        <ImageView
+            android:id="@+id/imgPortal"
+            android:layout_width="155dp"
+            android:layout_height="155dp"
+            android:contentDescription="Portal logo"
+            android:scaleType="centerCrop"
+            android:src="@drawable/portal" />
 
         <TextView
+            android:id="@+id/tvQuizTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
             android:text="Rick and Morty Quiz"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
@@ -23,40 +36,73 @@
         <Button
             android:id="@+id/btnStartQuiz"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="58dp"
             android:layout_marginTop="32dp"
             android:backgroundTint="#A8CC6A"
             android:text="Start Quiz"
+            android:textAllCaps="false"
             android:textColor="#111111"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tvQuizResultTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="52dp"
             android:text="Quiz Result"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tvLastResult"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="No quiz completed yet"
-            android:textColor="#A8CC6A"
             android:textSize="22sp"
             android:textStyle="bold" />
 
+        <LinearLayout
+            android:id="@+id/resultCard"
+            android:layout_width="155dp"
+            android:layout_height="155dp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/bg_quiz_result_card"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tvLastScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="-"
+                android:textColor="#A8CC6A"
+                android:textSize="54sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvLastResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="No quiz completed yet"
+                android:textAlignment="center"
+                android:textColor="#B8B8C8"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
+
+    <!-- QUESTION SCREEN -->
     <LinearLayout
         android:id="@+id/questionContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingTop="58dp"
+        android:paddingEnd="24dp"
         android:visibility="gone">
 
         <TextView
@@ -65,37 +111,64 @@
             android:layout_height="wrap_content"
             android:text="Question 1 / 10"
             android:textColor="#B8B8C8"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
+        <!-- TYPE A: CHARACTER IMAGE -->
         <ImageView
             android:id="@+id/ivCharacter"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="135dp"
+            android:layout_height="135dp"
             android:layout_marginTop="24dp"
+            android:contentDescription="Character image"
             android:scaleType="centerCrop" />
 
-        <TextView
-            android:id="@+id/tvEpisodeTitle"
+        <!-- TYPE B: EPISODE CARD -->
+        <LinearLayout
+            android:id="@+id/episodeCard"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="110dp"
             android:layout_marginTop="24dp"
-            android:background="#202236"
+            android:background="@drawable/bg_episode_card"
             android:gravity="center"
-            android:padding="20dp"
-            android:text="Pilot"
-            android:textColor="#FFFFFF"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvEpisodeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:letterSpacing="0.12"
+                android:text="EPISODE"
+                android:textColor="#8E90A3"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvEpisodeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:text="Pilot"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvEpisodeCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:text="S01E01"
             android:textColor="#B8B8C8"
             android:textSize="14sp"
+            android:textStyle="bold"
             android:visibility="gone" />
 
         <TextView
@@ -103,6 +176,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:gravity="center"
             android:text="Who is this character?"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
@@ -114,7 +188,9 @@
             android:layout_height="52dp"
             android:layout_marginTop="24dp"
             android:backgroundTint="#202236"
-            android:textColor="#FFFFFF" />
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnAnswer2"
@@ -122,7 +198,9 @@
             android:layout_height="52dp"
             android:layout_marginTop="10dp"
             android:backgroundTint="#202236"
-            android:textColor="#FFFFFF" />
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnAnswer3"
@@ -130,7 +208,9 @@
             android:layout_height="52dp"
             android:layout_marginTop="10dp"
             android:backgroundTint="#202236"
-            android:textColor="#FFFFFF" />
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnAnswer4"
@@ -138,19 +218,27 @@
             android:layout_height="52dp"
             android:layout_marginTop="10dp"
             android:backgroundTint="#202236"
-            android:textColor="#FFFFFF" />
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
+
+    <!-- FINAL RESULT SCREEN -->
     <LinearLayout
         android:id="@+id/resultContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingTop="160dp"
+        android:paddingEnd="24dp"
         android:visibility="gone">
 
         <TextView
+            android:id="@+id/tvFinalResultTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quiz Result"
@@ -158,15 +246,38 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvFinalResult"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="0 out of 10"
-            android:textColor="#A8CC6A"
-            android:textSize="32sp"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:id="@+id/finalResultCard"
+            android:layout_width="155dp"
+            android:layout_height="155dp"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/bg_quiz_result_card"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tvFinalScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="0"
+                android:textColor="#A8CC6A"
+                android:textSize="54sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvFinalResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:includeFontPadding="false"
+                android:text="out of 10"
+                android:textColor="#B8B8C8"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnPlayAgain"
@@ -175,6 +286,7 @@
             android:layout_marginTop="32dp"
             android:backgroundTint="#A8CC6A"
             android:text="Play Again"
+            android:textAllCaps="false"
             android:textColor="#111111"
             android:textStyle="bold" />
 

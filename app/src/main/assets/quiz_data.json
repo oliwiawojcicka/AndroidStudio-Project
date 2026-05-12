@@ -8,8 +8,8 @@
       "options": [
         { "name": "Rick Sanchez", "correct": true },
         { "name": "Morty Smith", "correct": false },
-        { "name": "Jerry Smith", "correct": false },
-        { "name": "Evil Morty", "correct": false }
+        { "name": "Beth Smith", "correct": false },
+        { "name": "Jerry Smith", "correct": false }
       ]
     },
     {
@@ -18,10 +18,10 @@
       "characterName": "Morty Smith",
       "image": "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
       "options": [
-        { "name": "Morty Smith", "correct": true },
-        { "name": "Rick Sanchez", "correct": false },
         { "name": "Summer Smith", "correct": false },
-        { "name": "Jerry Smith", "correct": false }
+        { "name": "Morty Smith", "correct": true },
+        { "name": "Mr. Meeseeks", "correct": false },
+        { "name": "Birdperson", "correct": false }
       ]
     },
     {
@@ -30,10 +30,10 @@
       "characterName": "Summer Smith",
       "image": "https://rickandmortyapi.com/api/character/avatar/3.jpeg",
       "options": [
-        { "name": "Summer Smith", "correct": true },
         { "name": "Beth Smith", "correct": false },
-        { "name": "Jessica", "correct": false },
-        { "name": "Annie", "correct": false }
+        { "name": "Scary Terry", "correct": false },
+        { "name": "Summer Smith", "correct": true },
+        { "name": "Squanchy", "correct": false }
       ]
     },
     {
@@ -43,9 +43,9 @@
       "image": "https://rickandmortyapi.com/api/character/avatar/4.jpeg",
       "options": [
         { "name": "Beth Smith", "correct": true },
-        { "name": "Summer Smith", "correct": false },
-        { "name": "Diane Sanchez", "correct": false },
-        { "name": "Unity", "correct": false }
+        { "name": "Jerry Smith", "correct": false },
+        { "name": "Abadango Cluster Princess", "correct": false },
+        { "name": "Rick Sanchez", "correct": false }
       ]
     },
     {
@@ -54,94 +54,190 @@
       "characterName": "Jerry Smith",
       "image": "https://rickandmortyapi.com/api/character/avatar/5.jpeg",
       "options": [
-        { "name": "Jerry Smith", "correct": true },
         { "name": "Morty Smith", "correct": false },
-        { "name": "Rick Sanchez", "correct": false },
-        { "name": "Mr. Goldenfold", "correct": false }
+        { "name": "Jerry Smith", "correct": true },
+        { "name": "Mr. Poopybutthole", "correct": false },
+        { "name": "Birdperson", "correct": false }
       ]
     },
     {
       "id": 6,
-      "type": "B",
-      "episodeTitle": "Pilot",
-      "episodeCode": "S01E01",
+      "type": "A",
+      "characterName": "Birdperson",
+      "image": "https://rickandmortyapi.com/api/character/avatar/45.jpeg",
       "options": [
-        { "name": "Rick Sanchez", "correct": true },
-        { "name": "Evil Morty", "correct": false },
-        { "name": "Birdperson", "correct": false },
-        { "name": "Squanchy", "correct": false }
+        { "name": "Birdperson", "correct": true },
+        { "name": "Squanchy", "correct": false },
+        { "name": "Mr. Meeseeks", "correct": false },
+        { "name": "Summer Smith", "correct": false }
       ]
     },
     {
       "id": 7,
-      "type": "B",
-      "episodeTitle": "Lawnmower Dog",
-      "episodeCode": "S01E02",
-      "options": [
-        { "name": "Snuffles", "correct": true },
-        { "name": "Tammy Guetermann", "correct": false },
-        { "name": "Birdperson", "correct": false },
-        { "name": "Unity", "correct": false }
-      ]
-    },
-    {
-      "id": 8,
-      "type": "B",
-      "episodeTitle": "Anatomy Park",
-      "episodeCode": "S01E03",
-      "options": [
-        { "name": "Annie", "correct": true },
-        { "name": "Evil Morty", "correct": false },
-        { "name": "Squanchy", "correct": false },
-        { "name": "Jessica", "correct": false }
-      ]
-    },
-    {
-      "id": 9,
-      "type": "B",
-      "episodeTitle": "M. Night Shaym-Aliens!",
-      "episodeCode": "S01E04",
-      "options": [
-        { "name": "Jerry Smith", "correct": true },
-        { "name": "Birdperson", "correct": false },
-        { "name": "Unity", "correct": false },
-        { "name": "Mr. Meeseeks", "correct": false }
-      ]
-    },
-    {
-      "id": 10,
-      "type": "B",
-      "episodeTitle": "Meeseeks and Destroy",
-      "episodeCode": "S01E05",
-      "options": [
-        { "name": "Mr. Meeseeks", "correct": true },
-        { "name": "Evil Morty", "correct": false },
-        { "name": "Tammy Guetermann", "correct": false },
-        { "name": "Snuffles", "correct": false }
-      ]
-    },
-    {
-      "id": 11,
       "type": "A",
-      "characterName": "Abradolf Lincler",
-      "image": "https://rickandmortyapi.com/api/character/avatar/7.jpeg",
+      "characterName": "Cynthia",
+      "image": "https://rickandmortyapi.com/api/character/avatar/62.jpeg",
       "options": [
-        { "name": "Abradolf Lincler", "correct": true },
-        { "name": "Birdperson", "correct": false },
-        { "name": "Squanchy", "correct": false },
+        { "name": "Beth Smith", "correct": false },
+        { "name": "Cynthia", "correct": true },
+        { "name": "Scary Terry", "correct": false },
         { "name": "Jerry Smith", "correct": false }
       ]
     },
     {
-      "id": 12,
+      "id": 8,
       "type": "A",
-      "characterName": "Adjudicator Rick",
-      "image": "https://rickandmortyapi.com/api/character/avatar/8.jpeg",
+      "characterName": "Scary Terry",
+      "image": "https://rickandmortyapi.com/api/character/avatar/58.jpeg",
       "options": [
-        { "name": "Adjudicator Rick", "correct": true },
         { "name": "Rick Sanchez", "correct": false },
-        { "name": "Alien Rick", "correct": false },
-        { "name": "Antenna Rick", "correct": false }
+        { "name": "Morty Smith", "correct": false },
+        { "name": "Scary Terry", "correct": true },
+        { "name": "Birdperson", "correct": false }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "A",
+      "characterName": "Mr. Meeseeks",
+      "image": "https://rickandmortyapi.com/api/character/avatar/242.jpeg",
+      "options": [
+        { "name": "Squanchy", "correct": false },
+        { "name": "Mr. Meeseeks", "correct": true },
+        { "name": "Jerry Smith", "correct": false },
+        { "name": "Beth Smith", "correct": false }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "A",
+      "characterName": "Mr. Poopybutthole",
+      "image": "https://rickandmortyapi.com/api/character/avatar/240.jpeg",
+      "options": [
+        { "name": "Rick Sanchez", "correct": false },
+        { "name": "Summer Smith", "correct": false },
+        { "name": "Birdperson", "correct": false },
+        { "name": "Mr. Poopybutthole", "correct": true }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "B",
+      "episodeTitle": "Pilot",
+      "episodeCode": "S01E01",
+      "options": [
+        { "name": "Morty Smith", "correct": true, "image": "https://rickandmortyapi.com/api/character/avatar/2.jpeg" },
+        { "name": "Birdperson", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/45.jpeg" },
+        { "name": "Mr. Meeseeks", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/242.jpeg" },
+        { "name": "Squanchy", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/187.jpeg" }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "B",
+      "episodeTitle": "Lawnmower Dog",
+      "episodeCode": "S01E02",
+      "options": [
+        { "name": "Jerry Smith", "correct": true, "image": "https://rickandmortyapi.com/api/character/avatar/5.jpeg" },
+        { "name": "Cynthia", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/62.jpeg" },
+        { "name": "Birdperson", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/45.jpeg" },
+        { "name": "Mr. Poopybutthole", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/240.jpeg" }
+      ]
+    },
+    {
+      "id": 13,
+      "type": "B",
+      "episodeTitle": "Anatomy Park",
+      "episodeCode": "S01E03",
+      "options": [
+        { "name": "Beth Smith", "correct": true, "image": "https://rickandmortyapi.com/api/character/avatar/4.jpeg" },
+        { "name": "Squanchy", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/187.jpeg" },
+        { "name": "Scary Terry", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/58.jpeg" },
+        { "name": "Mr. Meeseeks", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/242.jpeg" }
+      ]
+    },
+    {
+      "id": 14,
+      "type": "B",
+      "episodeTitle": "M. Night Shaym-Aliens!",
+      "episodeCode": "S01E04",
+      "options": [
+        { "name": "Rick Sanchez", "correct": true, "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg" },
+        { "name": "Mr. Meeseeks", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/242.jpeg" },
+        { "name": "Cynthia", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/62.jpeg" },
+        { "name": "Birdperson", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/45.jpeg" }
+      ]
+    },
+    {
+      "id": 15,
+      "type": "B",
+      "episodeTitle": "Meeseeks and Destroy",
+      "episodeCode": "S01E05",
+      "options": [
+        { "name": "Mr. Meeseeks", "correct": true, "image": "https://rickandmortyapi.com/api/character/avatar/242.jpeg" },
+        { "name": "Birdperson", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/45.jpeg" },
+        { "name": "Scary Terry", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/58.jpeg" },
+        { "name": "Mr. Poopybutthole", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/240.jpeg" }
+      ]
+    },
+    {
+      "id": 16,
+      "type": "B",
+      "episodeTitle": "Rick Potion #9",
+      "episodeCode": "S01E06",
+      "options": [
+        { "name": "Summer Smith", "correct": true, "image": "https://rickandmortyapi.com/api/character/avatar/3.jpeg" },
+        { "name": "Squanchy", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/187.jpeg" },
+        { "name": "Mr. Meeseeks", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/242.jpeg" },
+        { "name": "Cynthia", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/62.jpeg" }
+      ]
+    },
+    {
+      "id": 17,
+      "type": "B",
+      "episodeTitle": "Raising Gazorpazorp",
+      "episodeCode": "S01E07",
+      "options": [
+        { "name": "Morty Smith", "correct": true, "image": "https://rickandmortyapi.com/api/character/avatar/2.jpeg" },
+        { "name": "Scary Terry", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/58.jpeg" },
+        { "name": "Birdperson", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/45.jpeg" },
+        { "name": "Mr. Poopybutthole", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/240.jpeg" }
+      ]
+    },
+    {
+      "id": 18,
+      "type": "B",
+      "episodeTitle": "Rixty Minutes",
+      "episodeCode": "S01E08",
+      "options": [
+        { "name": "Jerry Smith", "correct": true, "image": "https://rickandmortyapi.com/api/character/avatar/5.jpeg" },
+        { "name": "Squanchy", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/187.jpeg" },
+        { "name": "Cynthia", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/62.jpeg" },
+        { "name": "Mr. Meeseeks", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/242.jpeg" }
+      ]
+    },
+    {
+      "id": 19,
+      "type": "B",
+      "episodeTitle": "Something Ricked This Way Comes",
+      "episodeCode": "S01E09",
+      "options": [
+        { "name": "Summer Smith", "correct": true, "image": "https://rickandmortyapi.com/api/character/avatar/3.jpeg" },
+        { "name": "Birdperson", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/45.jpeg" },
+        { "name": "Scary Terry", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/58.jpeg" },
+        { "name": "Mr. Poopybutthole", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/240.jpeg" }
+      ]
+    },
+    {
+      "id": 20,
+      "tipoA": false,
+      "episodeTitle": "Close Rick-counters of the Rick Kind",
+      "episodeCode": "S01E10",
+      "options": [
+        { "name": "Rick Sanchez", "correct": true, "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg" },
+        { "name": "Squanchy", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/187.jpeg" },
+        { "name": "Cynthia", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/62.jpeg" },
+        { "name": "Mr. Meeseeks", "correct": false, "image": "https://rickandmortyapi.com/api/character/avatar/242.jpeg" }
       ]
     }
   ]

@@ -1,5 +1,6 @@
 package com.salle.grup17.views.fragments;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,17 +35,26 @@ import java.util.List;
 public class QuizFragment extends Fragment {
 
     private static final int TOTAL_QUESTIONS = 10;
+
+    private static final int COLOR_BACKGROUND_BUTTON = Color.rgb(32, 34, 54);
+    private static final int COLOR_CORRECT = Color.rgb(168, 204, 106);
+    private static final int COLOR_WRONG = Color.rgb(190, 60, 60);
+    private static final int COLOR_WHITE = Color.WHITE;
+
     private static Integer lastQuizScore = null;
 
     private LinearLayout homeContainer;
     private LinearLayout questionContainer;
     private LinearLayout resultContainer;
+    private LinearLayout episodeCard;
 
+    private TextView tvLastScore;
     private TextView tvLastResult;
     private TextView tvProgress;
     private TextView tvQuestion;
     private TextView tvEpisodeTitle;
     private TextView tvEpisodeCode;
+    private TextView tvFinalScore;
     private TextView tvFinalResult;
 
     private ImageView ivCharacter;
@@ -86,12 +96,15 @@ public class QuizFragment extends Fragment {
         homeContainer = view.findViewById(R.id.homeContainer);
         questionContainer = view.findViewById(R.id.questionContainer);
         resultContainer = view.findViewById(R.id.resultContainer);
+        episodeCard = view.findViewById(R.id.episodeCard);
 
+        tvLastScore = view.findViewById(R.id.tvLastScore);
         tvLastResult = view.findViewById(R.id.tvLastResult);
         tvProgress = view.findViewById(R.id.tvProgress);
         tvQuestion = view.findViewById(R.id.tvQuestion);
         tvEpisodeTitle = view.findViewById(R.id.tvEpisodeTitle);
         tvEpisodeCode = view.findViewById(R.id.tvEpisodeCode);
+        tvFinalScore = view.findViewById(R.id.tvFinalScore);
         tvFinalResult = view.findViewById(R.id.tvFinalResult);
 
         ivCharacter = view.findViewById(R.id.ivCharacter);
@@ -123,9 +136,13 @@ public class QuizFragment extends Fragment {
         resultContainer.setVisibility(View.GONE);
 
         if (lastQuizScore == null) {
+            tvLastScore.setText("-");
             tvLastResult.setText("No quiz completed yet");
+            tvLastResult.setTextSize(13);
         } else {
-            tvLastResult.setText(lastQuizScore + " out of " + TOTAL_QUESTIONS);
+            tvLastScore.setText(String.valueOf(lastQuizScore));
+            tvLastResult.setText("out of " + TOTAL_QUESTIONS);
+            tvLastResult.setTextSize(16);
         }
     }
 
@@ -163,23 +180,9 @@ public class QuizFragment extends Fragment {
         tvProgress.setText("Question " + (currentQuestionIndex + 1) + " / " + TOTAL_QUESTIONS);
 
         if (question.isTypeA()) {
-            ivCharacter.setVisibility(View.VISIBLE);
-            tvEpisodeTitle.setVisibility(View.GONE);
-            tvEpisodeCode.setVisibility(View.GONE);
-
-            tvQuestion.setText("Who is this character?");
-
-            Glide.with(requireContext())
-                    .load(question.getImage())
-                    .into(ivCharacter);
+            showCharacterQuestion(question);
         } else {
-            ivCharacter.setVisibility(View.GONE);
-            tvEpisodeTitle.setVisibility(View.VISIBLE);
-            tvEpisodeCode.setVisibility(View.VISIBLE);
-
-            tvQuestion.setText("Which character appears in this episode?");
-            tvEpisodeTitle.setText(question.getEpisodeTitle());
-            tvEpisodeCode.setText(question.getEpisodeCode());
+            showEpisodeQuestion(question);
         }
 
         List<QuizOption> options = question.getOptions();
@@ -190,17 +193,45 @@ public class QuizFragment extends Fragment {
             return;
         }
 
-        Collections.shuffle(options);
+        List<QuizOption> shuffledOptions = new ArrayList<>(options);
+        Collections.shuffle(shuffledOptions);
 
-        btnAnswer1.setText(options.get(0).getName());
-        btnAnswer2.setText(options.get(1).getName());
-        btnAnswer3.setText(options.get(2).getName());
-        btnAnswer4.setText(options.get(3).getName());
+        btnAnswer1.setText(shuffledOptions.get(0).getName());
+        btnAnswer2.setText(shuffledOptions.get(1).getName());
+        btnAnswer3.setText(shuffledOptions.get(2).getName());
+        btnAnswer4.setText(shuffledOptions.get(3).getName());
 
-        btnAnswer1.setOnClickListener(v -> checkAnswer(options.get(0), btnAnswer1));
-        btnAnswer2.setOnClickListener(v -> checkAnswer(options.get(1), btnAnswer2));
-        btnAnswer3.setOnClickListener(v -> checkAnswer(options.get(2), btnAnswer3));
-        btnAnswer4.setOnClickListener(v -> checkAnswer(options.get(3), btnAnswer4));
+        btnAnswer1.setTag(shuffledOptions.get(0).isCorrect());
+        btnAnswer2.setTag(shuffledOptions.get(1).isCorrect());
+        btnAnswer3.setTag(shuffledOptions.get(2).isCorrect());
+        btnAnswer4.setTag(shuffledOptions.get(3).isCorrect());
+
+        btnAnswer1.setOnClickListener(v -> checkAnswer(shuffledOptions.get(0), btnAnswer1));
+        btnAnswer2.setOnClickListener(v -> checkAnswer(shuffledOptions.get(1), btnAnswer2));
+        btnAnswer3.setOnClickListener(v -> checkAnswer(shuffledOptions.get(2), btnAnswer3));
+        btnAnswer4.setOnClickListener(v -> checkAnswer(shuffledOptions.get(3), btnAnswer4));
+    }
+
+    private void showCharacterQuestion(QuizQuestion question) {
+        ivCharacter.setVisibility(View.VISIBLE);
+        episodeCard.setVisibility(View.GONE);
+        tvEpisodeCode.setVisibility(View.GONE);
+
+        tvQuestion.setText("Who is this character?");
+
+        Glide.with(requireContext())
+                .load(question.getImage())
+                .into(ivCharacter);
+    }
+
+    private void showEpisodeQuestion(QuizQuestion question) {
+        ivCharacter.setVisibility(View.GONE);
+        episodeCard.setVisibility(View.VISIBLE);
+        tvEpisodeCode.setVisibility(View.VISIBLE);
+
+        tvQuestion.setText("Which character appears in this episode?");
+        tvEpisodeTitle.setText(question.getEpisodeTitle());
+        tvEpisodeCode.setText(question.getEpisodeCode());
     }
 
     private void checkAnswer(QuizOption selectedOption, Button selectedButton) {
@@ -208,10 +239,12 @@ public class QuizFragment extends Fragment {
 
         if (selectedOption.isCorrect()) {
             correctAnswers++;
-            selectedButton.setBackgroundColor(Color.rgb(145, 190, 80));
+            setButtonColor(selectedButton, COLOR_CORRECT);
+            selectedButton.setTextColor(Color.rgb(17, 17, 17));
             Toast.makeText(requireContext(), "Correct!", Toast.LENGTH_SHORT).show();
         } else {
-            selectedButton.setBackgroundColor(Color.rgb(190, 60, 60));
+            setButtonColor(selectedButton, COLOR_WRONG);
+            selectedButton.setTextColor(COLOR_WHITE);
             highlightCorrectAnswer();
             Toast.makeText(requireContext(), "Wrong!", Toast.LENGTH_SHORT).show();
         }
@@ -234,7 +267,8 @@ public class QuizFragment extends Fragment {
         questionContainer.setVisibility(View.GONE);
         resultContainer.setVisibility(View.VISIBLE);
 
-        tvFinalResult.setText(correctAnswers + " out of " + TOTAL_QUESTIONS);
+        tvFinalScore.setText(String.valueOf(correctAnswers));
+        tvFinalResult.setText("out of " + TOTAL_QUESTIONS);
     }
 
     private void highlightCorrectAnswer() {
@@ -242,7 +276,8 @@ public class QuizFragment extends Fragment {
             Object tag = button.getTag();
 
             if (tag instanceof Boolean && (Boolean) tag) {
-                button.setBackgroundColor(Color.rgb(145, 190, 80));
+                setButtonColor(button, COLOR_CORRECT);
+                button.setTextColor(Color.rgb(17, 17, 17));
             }
         }
     }
@@ -250,9 +285,9 @@ public class QuizFragment extends Fragment {
     private void resetButtons() {
         for (Button button : answerButtons) {
             button.setEnabled(true);
-            button.setBackgroundColor(Color.TRANSPARENT);
-            button.setTextColor(Color.WHITE);
+            button.setTextColor(COLOR_WHITE);
             button.setTag(false);
+            setButtonColor(button, COLOR_BACKGROUND_BUTTON);
         }
     }
 
@@ -260,6 +295,10 @@ public class QuizFragment extends Fragment {
         for (Button button : answerButtons) {
             button.setEnabled(false);
         }
+    }
+
+    private void setButtonColor(Button button, int color) {
+        button.setBackgroundTintList(ColorStateList.valueOf(color));
     }
 
     private void loadQuizFromAssets() {
