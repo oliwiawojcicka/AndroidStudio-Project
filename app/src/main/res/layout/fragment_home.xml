@@ -12,6 +12,7 @@
         android:id="@+id/searchEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:hint="Search character"
         android:textColor="@android:color/white"
         android:textColorHint="#9E9E9E"

@@ -14,11 +14,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Favorites"
         android:textColor="@android:color/white"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        android:paddingBottom="12dp" />
+        android:fontFamily="sans-serif-black"
+        android:letterSpacing="0.03"
+        android:paddingBottom="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/favoritesRecyclerView"
