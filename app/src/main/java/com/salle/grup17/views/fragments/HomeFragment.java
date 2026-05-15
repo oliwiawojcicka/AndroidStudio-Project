@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +34,8 @@ public class HomeFragment extends Fragment {
     private CharacterAdapter characterAdapter;
     private LinearLayoutManager layoutManager;
 
+    private TextView tvNoResults;
+
     private final ArrayList<Character> characterList = new ArrayList<>();
 
     private int currentPage = 1;
@@ -55,6 +57,9 @@ public class HomeFragment extends Fragment {
 
         searchEditText = view.findViewById(R.id.searchEditText);
         charactersRecyclerView = view.findViewById(R.id.charactersRecyclerView);
+
+        // Podpinamy nasz napis z XML
+        tvNoResults = view.findViewById(R.id.tvNoResults);
 
         layoutManager = new LinearLayoutManager(requireContext());
         charactersRecyclerView.setLayoutManager(layoutManager);
@@ -122,6 +127,9 @@ public class HomeFragment extends Fragment {
         hasMorePages = true;
         characterList.clear();
         characterAdapter.notifyDataSetChanged();
+
+        showResults();
+
         loadCharacters(currentPage);
     }
 
@@ -160,15 +168,16 @@ public class HomeFragment extends Fragment {
                         hasMorePages = false;
                     }
 
+                    if (characterList.isEmpty()) {
+                        showEmptyState("No characters found");
+                    } else {
+                        showResults();
+                    }
+
                 } else {
                     hasMorePages = false;
-
                     if (characterList.isEmpty()) {
-                        Toast.makeText(
-                                requireContext(),
-                                "No characters found",
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        showEmptyState("No characters found");
                     }
                 }
             }
@@ -180,12 +189,24 @@ public class HomeFragment extends Fragment {
             ) {
                 isLoading = false;
 
-                Toast.makeText(
-                        requireContext(),
-                        "Connection error: " + t.getMessage(),
-                        Toast.LENGTH_LONG
-                ).show();
+                // Brak internetu - też zamieniamy dawny Toast na nasz napis!
+                if (characterList.isEmpty()) {
+                    showEmptyState("Connection error");
+                }
             }
         });
+    }
+
+
+
+    private void showEmptyState(String message) {
+        charactersRecyclerView.setVisibility(View.GONE);
+        tvNoResults.setText(message);
+        tvNoResults.setVisibility(View.VISIBLE);
+    }
+
+    private void showResults() {
+        tvNoResults.setVisibility(View.GONE);
+        charactersRecyclerView.setVisibility(View.VISIBLE);
     }
 }

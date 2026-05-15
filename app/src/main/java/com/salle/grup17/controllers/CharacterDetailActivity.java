@@ -1,10 +1,10 @@
 package com.salle.grup17.controllers;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +30,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
     private TextView detailInfo;
     private Button backBtn;
     private Button favoriteBtn;
+    private TextView tvStatusMessage;
 
     private FirebaseFirestore db;
     private FirebaseAuth auth;
@@ -48,6 +49,8 @@ public class CharacterDetailActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.backBtn);
         favoriteBtn = findViewById(R.id.favoriteBtn);
 
+        tvStatusMessage = findViewById(R.id.tvStatusMessage);
+
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
@@ -55,7 +58,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
 
         favoriteBtn.setOnClickListener(v -> {
             if (currentCharacter == null) {
-                Toast.makeText(this, "Character not loaded yet", Toast.LENGTH_SHORT).show();
+                showStatusMessage("Character not loaded yet");
                 return;
             }
 
@@ -69,8 +72,8 @@ public class CharacterDetailActivity extends AppCompatActivity {
         int characterId = getIntent().getIntExtra("character_id", -1);
 
         if (characterId == -1) {
-            Toast.makeText(this, "Character ID error", Toast.LENGTH_SHORT).show();
-            finish();
+            showStatusMessage("Character ID error");
+            tvStatusMessage.postDelayed(this::finish, 1500);
             return;
         }
 
@@ -122,11 +125,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
                             checkIfFavorite();
 
                         } else {
-                            Toast.makeText(
-                                    CharacterDetailActivity.this,
-                                    "API error",
-                                    Toast.LENGTH_SHORT
-                            ).show();
+                            showStatusMessage("API error");
                         }
                     }
 
@@ -135,11 +134,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
                             @NonNull Call<Character> call,
                             @NonNull Throwable t
                     ) {
-                        Toast.makeText(
-                                CharacterDetailActivity.this,
-                                "Connection error: " + t.getMessage(),
-                                Toast.LENGTH_LONG
-                        ).show();
+                        showStatusMessage("Connection error: " + t.getMessage());
                     }
                 });
     }
@@ -159,14 +154,20 @@ public class CharacterDetailActivity extends AppCompatActivity {
             return;
         }
 
+        favoriteBtn.setEnabled(false);
+
         db.collection("users")
                 .document(userId)
                 .collection("favorites")
                 .document(String.valueOf(currentCharacter.getId()))
                 .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    isFavorite = documentSnapshot.exists();
-                    updateFavoriteButton();
+                .addOnCompleteListener(task -> {
+                    favoriteBtn.setEnabled(true);
+
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        isFavorite = task.getResult().exists();
+                        updateFavoriteButton();
+                    }
                 });
     }
 
@@ -174,9 +175,11 @@ public class CharacterDetailActivity extends AppCompatActivity {
         String userId = getUserId();
 
         if (userId == null) {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            showStatusMessage("User not logged in");
             return;
         }
+
+        favoriteBtn.setEnabled(false);
 
         Map<String, Object> favorite = new HashMap<>();
         favorite.put("id", currentCharacter.getId());
@@ -193,22 +196,24 @@ public class CharacterDetailActivity extends AppCompatActivity {
                 .addOnSuccessListener(unused -> {
                     isFavorite = true;
                     updateFavoriteButton();
-                    Toast.makeText(this, "Added to favorites", Toast.LENGTH_SHORT).show();
+                    favoriteBtn.setEnabled(true);
+                    showStatusMessage("Added"); // <--- Zmiana na "Added"
                 })
-                .addOnFailureListener(e -> Toast.makeText(
-                        this,
-                        "Error adding favorite",
-                        Toast.LENGTH_SHORT
-                ).show());
+                .addOnFailureListener(e -> {
+                    favoriteBtn.setEnabled(true);
+                    showStatusMessage("Error adding favorite");
+                });
     }
 
     private void removeFromFavorites() {
         String userId = getUserId();
 
         if (userId == null) {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show();
+            showStatusMessage("User not logged in");
             return;
         }
+
+        favoriteBtn.setEnabled(false);
 
         db.collection("users")
                 .document(userId)
@@ -218,13 +223,13 @@ public class CharacterDetailActivity extends AppCompatActivity {
                 .addOnSuccessListener(unused -> {
                     isFavorite = false;
                     updateFavoriteButton();
-                    Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                    favoriteBtn.setEnabled(true);
+                    showStatusMessage("Deleted"); // <--- Zmiana na "Deleted"
                 })
-                .addOnFailureListener(e -> Toast.makeText(
-                        this,
-                        "Error removing favorite",
-                        Toast.LENGTH_SHORT
-                ).show());
+                .addOnFailureListener(e -> {
+                    favoriteBtn.setEnabled(true);
+                    showStatusMessage("Error removing favorite");
+                });
     }
 
     private void updateFavoriteButton() {
@@ -233,5 +238,14 @@ public class CharacterDetailActivity extends AppCompatActivity {
         } else {
             favoriteBtn.setText("Add to favorites");
         }
+    }
+
+
+    private void showStatusMessage(String message) {
+        tvStatusMessage.setText(message);
+        tvStatusMessage.setVisibility(View.VISIBLE);
+        tvStatusMessage.removeCallbacks(null);
+
+        tvStatusMessage.postDelayed(() -> tvStatusMessage.setVisibility(View.GONE), 2000);
     }
 }

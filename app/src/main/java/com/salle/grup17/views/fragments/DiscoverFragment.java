@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,9 @@ import com.salle.grup17.api.RetrofitClient;
 import com.salle.grup17.api.RickAndMortyApi;
 import com.salle.grup17.models.ApiResponse;
 import com.salle.grup17.models.Location;
+
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,6 +31,7 @@ public class DiscoverFragment extends Fragment {
     private LocationAdapter adapter;
     private ProgressBar progressBar;
     private RickAndMortyApi api;
+    private TextView tvNoResults;
 
     @Nullable
     @Override
@@ -35,7 +40,7 @@ public class DiscoverFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.rvDiscover);
         progressBar = view.findViewById(R.id.pbLoading);
-
+        tvNoResults = view.findViewById(R.id.tvNoResults);
         adapter = new LocationAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
@@ -52,16 +57,34 @@ public class DiscoverFragment extends Fragment {
             @Override
             public void onResponse(Call<ApiResponse<Location>> call, Response<ApiResponse<Location>> response) {
                 progressBar.setVisibility(View.GONE);
+
                 if (response.isSuccessful() && response.body() != null) {
+
+                    showResults();
                     adapter.setLocations(response.body().getResults());
+                } else {
+                    showEmptyState();
+                    adapter.setLocations(new ArrayList<>());
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<Location>> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Error loading locations", Toast.LENGTH_SHORT).show();
+
+
+                showEmptyState();
+                tvNoResults.setText("Connection error!");
             }
         });
+    }
+    private void showEmptyState() {
+        recyclerView.setVisibility(View.GONE);
+        tvNoResults.setVisibility(View.VISIBLE);
+    }
+
+    private void showResults() {
+        tvNoResults.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 }

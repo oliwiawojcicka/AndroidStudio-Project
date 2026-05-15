@@ -16,6 +16,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     private List<Location> locationList = new ArrayList<>();
 
     public void setLocations(List<Location> locations) {
+        this.locationList.clear(); 
         this.locationList.addAll(locations);
         notifyDataSetChanged();
     }
