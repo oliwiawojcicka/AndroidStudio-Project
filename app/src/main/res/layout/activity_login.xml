@@ -17,6 +17,7 @@
         android:textColor="#A8FF3E"
         android:layout_marginBottom="8dp" />
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +26,12 @@
         android:textSize="13sp"
         android:textColor="#8899AA"
         android:layout_marginBottom="40dp" />
-
+    <TextView
+        android:id="@+id/loginErrorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#D32F2F"
+        android:visibility="gone" />
     <EditText
         android:id="@+id/emailInput"
         android:layout_width="match_parent"

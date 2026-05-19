@@ -16,6 +16,19 @@
         android:textStyle="bold"
         android:textColor="#A8FF3E"
         android:layout_marginBottom="8dp" />
+    <TextView
+        android:id="@+id/registerErrorMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#D32F2F"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/registerSuccessMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#388E3C"
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/registerEmailInput"

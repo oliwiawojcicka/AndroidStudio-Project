@@ -1,4 +1,4 @@
-package com.salle.grup17.views.fragments;
+package com.salle.grup17.controllers.fragments;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;

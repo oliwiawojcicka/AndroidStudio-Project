@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="12dp"
     android:background="#101123"
-    tools:context=".views.fragments.HomeFragment">
+    tools:context=".controllers.fragments.HomeFragment">
 
     <EditText
         android:id="@+id/searchEditText"

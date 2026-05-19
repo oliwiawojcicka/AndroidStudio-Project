@@ -1,4 +1,4 @@
-package com.salle.grup17.views.fragments;
+package com.salle.grup17.controllers.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
