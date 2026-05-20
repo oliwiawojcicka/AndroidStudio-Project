@@ -37,7 +37,7 @@ public class MainAppActivity extends AppCompatActivity {
         tvTabError = findViewById(R.id.tvTabError);
 
         if (bottomNavigationView == null) {
-            showTabError("Navigation error. Please restart the app.");
+            showTabError(getString(R.string.tab_error_navigation));
             Log.e(TAG, "BottomNavigationView not found in activity_main_app.xml");
             return;
         }
@@ -52,7 +52,7 @@ public class MainAppActivity extends AppCompatActivity {
             Fragment selectedFragment = getFragmentForMenuItem(item.getItemId());
 
             if (selectedFragment == null) {
-                showTabError("Section unavailable.");
+                showTabError(getString(R.string.tab_error_section_unavailable));
                 Log.e(TAG, "No fragment found for menu item id: " + item.getItemId());
                 return false;
             }
@@ -87,7 +87,7 @@ public class MainAppActivity extends AppCompatActivity {
 
     private boolean openFragment(Fragment fragment) {
         if (fragment == null) {
-            showTabError("Section unavailable.");
+            showTabError(getString(R.string.tab_error_section_unavailable));
             Log.e(TAG, "Tried to open a null fragment");
             return false;
         }
@@ -102,7 +102,7 @@ public class MainAppActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, "Error opening fragment: " + fragment.getClass().getSimpleName(), e);
-            showTabError("Error opening section.");
+            showTabError(getString(R.string.tab_error_opening_section));
             return false;
         }
     }
@@ -119,7 +119,7 @@ public class MainAppActivity extends AppCompatActivity {
         handler.removeCallbacksAndMessages(null);
         handler.postDelayed(() -> {
             if (tvTabError != null) {
-                tvTabError.setText("");
+                tvTabError.setText(getString(R.string.empty_text));
                 tvTabError.setVisibility(View.GONE);
             }
         }, 3000);
@@ -127,7 +127,7 @@ public class MainAppActivity extends AppCompatActivity {
 
     private void clearTabError() {
         if (tvTabError != null) {
-            tvTabError.setText("");
+            tvTabError.setText(getString(R.string.empty_text));
             tvTabError.setVisibility(View.GONE);
         }
     }

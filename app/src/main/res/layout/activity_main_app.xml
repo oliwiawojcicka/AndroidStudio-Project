@@ -19,7 +19,7 @@
         android:background="#3A1C25"
         android:gravity="center"
         android:padding="12dp"
-        android:text=""
+        android:text="@string/empty_text"
         android:textColor="#FF6B6B"
         android:textSize="14sp"
         android:textStyle="bold"

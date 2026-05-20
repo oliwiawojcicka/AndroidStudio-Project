@@ -138,12 +138,12 @@ public class QuizFragment extends Fragment {
         resultContainer.setVisibility(View.GONE);
 
         if (lastQuizScore == null) {
-            tvLastScore.setText("-");
-            tvLastResult.setText("No quiz completed yet");
+            tvLastScore.setText(getString(R.string.empty_score));
+            tvLastResult.setText(getString(R.string.no_quiz_completed));
             tvLastResult.setTextSize(13);
         } else {
             tvLastScore.setText(String.valueOf(lastQuizScore));
-            tvLastResult.setText("out of " + TOTAL_QUESTIONS);
+            tvLastResult.setText(getString(R.string.out_of_questions, TOTAL_QUESTIONS));
             tvLastResult.setTextSize(16);
         }
     }
@@ -171,13 +171,13 @@ public class QuizFragment extends Fragment {
         List<String> errors = new ArrayList<>();
 
         if (allQuestions.isEmpty()) {
-            errors.add("Quiz data could not be loaded.");
+            errors.add(getString(R.string.quiz_error_data_not_loaded));
             showQuizErrors(errors);
             return false;
         }
 
         if (allQuestions.size() < TOTAL_QUESTIONS) {
-            errors.add("Not enough quiz questions available.");
+            errors.add(getString(R.string.quiz_error_not_enough_questions));
         }
 
         for (int i = 0; i < allQuestions.size(); i++) {
@@ -185,14 +185,14 @@ public class QuizFragment extends Fragment {
             int questionNumber = i + 1;
 
             if (question == null) {
-                errors.add("Question " + questionNumber + ": question is empty.");
+                errors.add(getString(R.string.quiz_error_question_empty, questionNumber));
                 continue;
             }
 
             List<QuizOption> options = question.getOptions();
 
             if (options == null || options.size() != 4) {
-                errors.add("Question " + questionNumber + ": each question must have exactly 4 answers.");
+                errors.add(getString(R.string.quiz_error_four_answers, questionNumber));
             } else {
                 int correctCount = 0;
 
@@ -201,12 +201,12 @@ public class QuizFragment extends Fragment {
                     int answerNumber = j + 1;
 
                     if (option == null) {
-                        errors.add("Question " + questionNumber + ", answer " + answerNumber + ": answer is empty.");
+                        errors.add(getString(R.string.quiz_error_answer_empty, questionNumber, answerNumber));
                         continue;
                     }
 
                     if (option.getName() == null || option.getName().trim().isEmpty()) {
-                        errors.add("Question " + questionNumber + ", answer " + answerNumber + ": answer text is missing.");
+                        errors.add(getString(R.string.quiz_error_answer_text_missing, questionNumber, answerNumber));
                     }
 
                     if (option.isCorrect()) {
@@ -215,21 +215,21 @@ public class QuizFragment extends Fragment {
                 }
 
                 if (correctCount != 1) {
-                    errors.add("Question " + questionNumber + ": each question must have exactly 1 correct answer.");
+                    errors.add(getString(R.string.quiz_error_one_correct, questionNumber));
                 }
             }
 
             if (question.isTypeA()) {
                 if (question.getImage() == null || question.getImage().trim().isEmpty()) {
-                    errors.add("Question " + questionNumber + ": character image is missing.");
+                    errors.add(getString(R.string.quiz_error_image_missing, questionNumber));
                 }
             } else {
                 if (question.getEpisodeTitle() == null || question.getEpisodeTitle().trim().isEmpty()) {
-                    errors.add("Question " + questionNumber + ": episode title is missing.");
+                    errors.add(getString(R.string.quiz_error_episode_title_missing, questionNumber));
                 }
 
                 if (question.getEpisodeCode() == null || question.getEpisodeCode().trim().isEmpty()) {
-                    errors.add("Question " + questionNumber + ": episode code is missing.");
+                    errors.add(getString(R.string.quiz_error_episode_code_missing, questionNumber));
                 }
             }
         }
@@ -251,7 +251,7 @@ public class QuizFragment extends Fragment {
 
         if (currentQuiz.isEmpty() || currentQuestionIndex >= currentQuiz.size()) {
             showHome();
-            showQuizError("Quiz could not be started.");
+            showQuizError(getString(R.string.quiz_error_could_not_start));
             return;
         }
 
@@ -259,11 +259,15 @@ public class QuizFragment extends Fragment {
 
         if (question == null) {
             showHome();
-            showQuizError("Invalid question data.");
+            showQuizError(getString(R.string.quiz_error_invalid_question));
             return;
         }
 
-        tvProgress.setText("Question " + (currentQuestionIndex + 1) + " / " + TOTAL_QUESTIONS);
+        tvProgress.setText(getString(
+                R.string.question_progress,
+                currentQuestionIndex + 1,
+                TOTAL_QUESTIONS
+        ));
 
         if (question.isTypeA()) {
             showCharacterQuestion(question);
@@ -275,7 +279,7 @@ public class QuizFragment extends Fragment {
 
         if (options == null || options.size() != 4) {
             showHome();
-            showQuizError("Invalid question data. Please check quiz_data.json.");
+            showQuizError(getString(R.string.quiz_error_invalid_question_json));
             return;
         }
 
@@ -303,7 +307,7 @@ public class QuizFragment extends Fragment {
         episodeCard.setVisibility(View.GONE);
         tvEpisodeCode.setVisibility(View.GONE);
 
-        tvQuestion.setText("Who is this character?");
+        tvQuestion.setText(getString(R.string.question_character));
 
         String imageUrl = question.getImage();
 
@@ -328,14 +332,14 @@ public class QuizFragment extends Fragment {
         String episodeCode = question.getEpisodeCode();
 
         if (episodeTitle == null || episodeTitle.trim().isEmpty()) {
-            episodeTitle = "Unknown episode";
+            episodeTitle = getString(R.string.unknown_episode);
         }
 
         if (episodeCode == null || episodeCode.trim().isEmpty()) {
-            episodeCode = "Unknown code";
+            episodeCode = getString(R.string.unknown_code);
         }
 
-        tvQuestion.setText("Which character appears in this episode?");
+        tvQuestion.setText(getString(R.string.question_episode));
         tvEpisodeTitle.setText(episodeTitle);
         tvEpisodeCode.setText(episodeCode);
     }
@@ -343,7 +347,7 @@ public class QuizFragment extends Fragment {
     private void checkAnswer(QuizOption selectedOption, Button selectedButton) {
         if (selectedOption == null || selectedButton == null) {
             showHome();
-            showQuizError("Invalid answer data.");
+            showQuizError(getString(R.string.quiz_error_invalid_answer));
             return;
         }
 
@@ -382,7 +386,7 @@ public class QuizFragment extends Fragment {
         resultContainer.setVisibility(View.VISIBLE);
 
         tvFinalScore.setText(String.valueOf(correctAnswers));
-        tvFinalResult.setText("out of " + TOTAL_QUESTIONS);
+        tvFinalResult.setText(getString(R.string.out_of_questions, TOTAL_QUESTIONS));
     }
 
     private void highlightCorrectAnswer() {
@@ -442,7 +446,7 @@ public class QuizFragment extends Fragment {
         StringBuilder message = new StringBuilder();
 
         for (String error : errors) {
-            message.append("• ").append(error).append("\n");
+            message.append(getString(R.string.error_bullet, error)).append("\n");
         }
 
         tvQuizError.setText(message.toString().trim());
@@ -470,13 +474,13 @@ public class QuizFragment extends Fragment {
             }
 
             if (allQuestions.isEmpty()) {
-                showQuizError("No quiz questions found.");
+                showQuizError(getString(R.string.quiz_error_no_questions));
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             allQuestions.clear();
-            showQuizError("Error loading quiz data.");
+            showQuizError(getString(R.string.quiz_error_loading_data));
         }
     }
 

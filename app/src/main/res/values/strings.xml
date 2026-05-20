@@ -17,4 +17,47 @@
     <string name="btn_change_email">Change Email</string>
     <string name="btn_logout">Log Out</string>
     <string name="btn_delete_account">Delete Account</string>
+
+    <string name="portal_logo_description">Portal logo</string>
+    <string name="quiz_title">Rick and Morty Quiz</string>
+    <string name="start_quiz">Start Quiz</string>
+    <string name="quiz_result">Quiz Result</string>
+    <string name="empty_score">-</string>
+    <string name="default_score">0</string>
+    <string name="no_quiz_completed">No quiz completed yet</string>
+    <string name="question_progress_default">Question 1 / 10</string>
+    <string name="character_image_description">Character image</string>
+    <string name="episode_label">EPISODE</string>
+    <string name="episode_default_title">Pilot</string>
+    <string name="episode_default_code">S01E01</string>
+    <string name="question_character">Who is this character?</string>
+    <string name="out_of_10">out of 10</string>
+    <string name="play_again">Play Again</string>
+    <string name="question_progress">Question %1$d / %2$d</string>
+    <string name="question_episode">Which character appears in this episode?</string>
+    <string name="out_of_questions">out of %1$d</string>
+    <string name="unknown_episode">Unknown episode</string>
+    <string name="unknown_code">Unknown code</string>
+
+    <string name="quiz_error_data_not_loaded">Quiz data could not be loaded.</string>
+    <string name="quiz_error_not_enough_questions">Not enough quiz questions available.</string>
+    <string name="quiz_error_question_empty">Question %1$d: question is empty.</string>
+    <string name="quiz_error_four_answers">Question %1$d: each question must have exactly 4 answers.</string>
+    <string name="quiz_error_answer_empty">Question %1$d, answer %2$d: answer is empty.</string>
+    <string name="quiz_error_answer_text_missing">Question %1$d, answer %2$d: answer text is missing.</string>
+    <string name="quiz_error_one_correct">Question %1$d: each question must have exactly 1 correct answer.</string>
+    <string name="quiz_error_image_missing">Question %1$d: character image is missing.</string>
+    <string name="quiz_error_episode_title_missing">Question %1$d: episode title is missing.</string>
+    <string name="quiz_error_episode_code_missing">Question %1$d: episode code is missing.</string>
+    <string name="quiz_error_could_not_start">Quiz could not be started.</string>
+    <string name="quiz_error_invalid_question">Invalid question data.</string>
+    <string name="quiz_error_invalid_question_json">Invalid question data. Please check quiz_data.json.</string>
+    <string name="quiz_error_invalid_answer">Invalid answer data.</string>
+    <string name="quiz_error_no_questions">No quiz questions found.</string>
+    <string name="quiz_error_loading_data">Error loading quiz data.</string>
+    <string name="error_bullet">• %1$s</string>
+    <string name="tab_error_navigation">Navigation error. Please restart the app.</string>
+    <string name="tab_error_section_unavailable">Section unavailable.</string>
+    <string name="tab_error_opening_section">Error opening section.</string>
+    <string name="empty_text"></string>
 </resources>
