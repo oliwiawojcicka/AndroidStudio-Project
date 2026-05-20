@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Logged in as"
+            android:text="@string/profile_logged_in_as"
             android:textColor="#AAAAAA"
             android:textSize="14sp"
             android:layout_marginBottom="6dp" />
@@ -33,48 +33,44 @@
             android:id="@+id/profileEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="user@email.com"
+            android:text="@string/profile_email_placeholder"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginBottom="40dp" />
 
-        <!-- Zmiana hasła -->
         <Button
             android:id="@+id/changePasswordBtn"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:text="Change Password"
+            android:text="@string/btn_change_password"
             android:backgroundTint="#2A2D45"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="12dp" />
 
-        <!-- Zmiana emaila -->
         <Button
             android:id="@+id/changeEmailBtn"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:text="Change Email"
+            android:text="@string/btn_change_email"
             android:backgroundTint="#2A2D45"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="12dp" />
 
-        <!-- Logout -->
         <Button
             android:id="@+id/logoutBtn"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:text="Log Out"
+            android:text="@string/btn_logout"
             android:backgroundTint="#E53935"
             android:textColor="#FFFFFF"
             android:layout_marginBottom="12dp" />
 
-        <!-- Usuń konto -->
         <Button
             android:id="@+id/deleteAccountBtn"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
-            android:text="Delete Account"
+            android:text="@string/btn_delete_account"
             android:backgroundTint="#B71C1C"
             android:textColor="#FFFFFF" />
 
