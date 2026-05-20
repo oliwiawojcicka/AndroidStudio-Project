@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +39,7 @@ public class QuizFragment extends Fragment {
     private static final int COLOR_CORRECT = Color.rgb(168, 204, 106);
     private static final int COLOR_WRONG = Color.rgb(190, 60, 60);
     private static final int COLOR_WHITE = Color.WHITE;
+    private static final int COLOR_DARK_TEXT = Color.rgb(17, 17, 17);
 
     private static Integer lastQuizScore = null;
 
@@ -56,6 +56,7 @@ public class QuizFragment extends Fragment {
     private TextView tvEpisodeCode;
     private TextView tvFinalScore;
     private TextView tvFinalResult;
+    private TextView tvQuizError;
 
     private ImageView ivCharacter;
 
@@ -106,6 +107,7 @@ public class QuizFragment extends Fragment {
         tvEpisodeCode = view.findViewById(R.id.tvEpisodeCode);
         tvFinalScore = view.findViewById(R.id.tvFinalScore);
         tvFinalResult = view.findViewById(R.id.tvFinalResult);
+        tvQuizError = view.findViewById(R.id.tvQuizError);
 
         ivCharacter = view.findViewById(R.id.ivCharacter);
 
@@ -147,12 +149,9 @@ public class QuizFragment extends Fragment {
     }
 
     private void startQuiz() {
-        if (allQuestions.size() < TOTAL_QUESTIONS) {
-            Toast.makeText(
-                    requireContext(),
-                    "Not enough quiz questions in JSON",
-                    Toast.LENGTH_SHORT
-            ).show();
+        clearQuizError();
+
+        if (!validateAllQuestions()) {
             return;
         }
 
@@ -168,6 +167,81 @@ public class QuizFragment extends Fragment {
         showQuestion();
     }
 
+    private boolean validateAllQuestions() {
+        List<String> errors = new ArrayList<>();
+
+        if (allQuestions.isEmpty()) {
+            errors.add("Quiz data could not be loaded.");
+            showQuizErrors(errors);
+            return false;
+        }
+
+        if (allQuestions.size() < TOTAL_QUESTIONS) {
+            errors.add("Not enough quiz questions available.");
+        }
+
+        for (int i = 0; i < allQuestions.size(); i++) {
+            QuizQuestion question = allQuestions.get(i);
+            int questionNumber = i + 1;
+
+            if (question == null) {
+                errors.add("Question " + questionNumber + ": question is empty.");
+                continue;
+            }
+
+            List<QuizOption> options = question.getOptions();
+
+            if (options == null || options.size() != 4) {
+                errors.add("Question " + questionNumber + ": each question must have exactly 4 answers.");
+            } else {
+                int correctCount = 0;
+
+                for (int j = 0; j < options.size(); j++) {
+                    QuizOption option = options.get(j);
+                    int answerNumber = j + 1;
+
+                    if (option == null) {
+                        errors.add("Question " + questionNumber + ", answer " + answerNumber + ": answer is empty.");
+                        continue;
+                    }
+
+                    if (option.getName() == null || option.getName().trim().isEmpty()) {
+                        errors.add("Question " + questionNumber + ", answer " + answerNumber + ": answer text is missing.");
+                    }
+
+                    if (option.isCorrect()) {
+                        correctCount++;
+                    }
+                }
+
+                if (correctCount != 1) {
+                    errors.add("Question " + questionNumber + ": each question must have exactly 1 correct answer.");
+                }
+            }
+
+            if (question.isTypeA()) {
+                if (question.getImage() == null || question.getImage().trim().isEmpty()) {
+                    errors.add("Question " + questionNumber + ": character image is missing.");
+                }
+            } else {
+                if (question.getEpisodeTitle() == null || question.getEpisodeTitle().trim().isEmpty()) {
+                    errors.add("Question " + questionNumber + ": episode title is missing.");
+                }
+
+                if (question.getEpisodeCode() == null || question.getEpisodeCode().trim().isEmpty()) {
+                    errors.add("Question " + questionNumber + ": episode code is missing.");
+                }
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            showQuizErrors(errors);
+            return false;
+        }
+
+        return true;
+    }
+
     private void showQuestion() {
         resetButtons();
 
@@ -175,7 +249,19 @@ public class QuizFragment extends Fragment {
         questionContainer.setVisibility(View.VISIBLE);
         resultContainer.setVisibility(View.GONE);
 
+        if (currentQuiz.isEmpty() || currentQuestionIndex >= currentQuiz.size()) {
+            showHome();
+            showQuizError("Quiz could not be started.");
+            return;
+        }
+
         QuizQuestion question = currentQuiz.get(currentQuestionIndex);
+
+        if (question == null) {
+            showHome();
+            showQuizError("Invalid question data.");
+            return;
+        }
 
         tvProgress.setText("Question " + (currentQuestionIndex + 1) + " / " + TOTAL_QUESTIONS);
 
@@ -187,9 +273,9 @@ public class QuizFragment extends Fragment {
 
         List<QuizOption> options = question.getOptions();
 
-        if (options == null || options.size() < 4) {
-            Toast.makeText(requireContext(), "Invalid question options", Toast.LENGTH_SHORT).show();
+        if (options == null || options.size() != 4) {
             showHome();
+            showQuizError("Invalid question data. Please check quiz_data.json.");
             return;
         }
 
@@ -219,8 +305,17 @@ public class QuizFragment extends Fragment {
 
         tvQuestion.setText("Who is this character?");
 
+        String imageUrl = question.getImage();
+
+        if (imageUrl == null || imageUrl.trim().isEmpty()) {
+            ivCharacter.setImageResource(android.R.drawable.ic_menu_report_image);
+            return;
+        }
+
         Glide.with(requireContext())
-                .load(question.getImage())
+                .load(imageUrl)
+                .placeholder(android.R.drawable.ic_menu_gallery)
+                .error(android.R.drawable.ic_menu_report_image)
                 .into(ivCharacter);
     }
 
@@ -229,27 +324,46 @@ public class QuizFragment extends Fragment {
         episodeCard.setVisibility(View.VISIBLE);
         tvEpisodeCode.setVisibility(View.VISIBLE);
 
+        String episodeTitle = question.getEpisodeTitle();
+        String episodeCode = question.getEpisodeCode();
+
+        if (episodeTitle == null || episodeTitle.trim().isEmpty()) {
+            episodeTitle = "Unknown episode";
+        }
+
+        if (episodeCode == null || episodeCode.trim().isEmpty()) {
+            episodeCode = "Unknown code";
+        }
+
         tvQuestion.setText("Which character appears in this episode?");
-        tvEpisodeTitle.setText(question.getEpisodeTitle());
-        tvEpisodeCode.setText(question.getEpisodeCode());
+        tvEpisodeTitle.setText(episodeTitle);
+        tvEpisodeCode.setText(episodeCode);
     }
 
     private void checkAnswer(QuizOption selectedOption, Button selectedButton) {
+        if (selectedOption == null || selectedButton == null) {
+            showHome();
+            showQuizError("Invalid answer data.");
+            return;
+        }
+
         disableButtons();
 
         if (selectedOption.isCorrect()) {
             correctAnswers++;
             setButtonColor(selectedButton, COLOR_CORRECT);
-            selectedButton.setTextColor(Color.rgb(17, 17, 17));
-            Toast.makeText(requireContext(), "Correct!", Toast.LENGTH_SHORT).show();
+            selectedButton.setTextColor(COLOR_DARK_TEXT);
         } else {
             setButtonColor(selectedButton, COLOR_WRONG);
             selectedButton.setTextColor(COLOR_WHITE);
             highlightCorrectAnswer();
-            Toast.makeText(requireContext(), "Wrong!", Toast.LENGTH_SHORT).show();
         }
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (!isAdded()) {
+                return;
+            }
+
             currentQuestionIndex++;
 
             if (currentQuestionIndex < TOTAL_QUESTIONS) {
@@ -273,17 +387,25 @@ public class QuizFragment extends Fragment {
 
     private void highlightCorrectAnswer() {
         for (Button button : answerButtons) {
+            if (button == null) {
+                continue;
+            }
+
             Object tag = button.getTag();
 
             if (tag instanceof Boolean && (Boolean) tag) {
                 setButtonColor(button, COLOR_CORRECT);
-                button.setTextColor(Color.rgb(17, 17, 17));
+                button.setTextColor(COLOR_DARK_TEXT);
             }
         }
     }
 
     private void resetButtons() {
         for (Button button : answerButtons) {
+            if (button == null) {
+                continue;
+            }
+
             button.setEnabled(true);
             button.setTextColor(COLOR_WHITE);
             button.setTag(false);
@@ -293,12 +415,45 @@ public class QuizFragment extends Fragment {
 
     private void disableButtons() {
         for (Button button : answerButtons) {
-            button.setEnabled(false);
+            if (button != null) {
+                button.setEnabled(false);
+            }
         }
     }
 
     private void setButtonColor(Button button, int color) {
-        button.setBackgroundTintList(ColorStateList.valueOf(color));
+        if (button != null) {
+            button.setBackgroundTintList(ColorStateList.valueOf(color));
+        }
+    }
+
+    private void showQuizError(String message) {
+        if (tvQuizError != null) {
+            tvQuizError.setText(message);
+            tvQuizError.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showQuizErrors(List<String> errors) {
+        if (tvQuizError == null) {
+            return;
+        }
+
+        StringBuilder message = new StringBuilder();
+
+        for (String error : errors) {
+            message.append("• ").append(error).append("\n");
+        }
+
+        tvQuizError.setText(message.toString().trim());
+        tvQuizError.setVisibility(View.VISIBLE);
+    }
+
+    private void clearQuizError() {
+        if (tvQuizError != null) {
+            tvQuizError.setText("");
+            tvQuizError.setVisibility(View.GONE);
+        }
     }
 
     private void loadQuizFromAssets() {
@@ -314,19 +469,32 @@ public class QuizFragment extends Fragment {
                 allQuestions.addAll(quizData.getQuestions());
             }
 
+            if (allQuestions.isEmpty()) {
+                showQuizError("No quiz questions found.");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(requireContext(), "Error loading quiz JSON", Toast.LENGTH_SHORT).show();
+            allQuestions.clear();
+            showQuizError("Error loading quiz data.");
         }
     }
 
     private String loadJSONFromAssets(String filename) throws IOException {
+        if (!isAdded()) {
+            throw new IOException("Fragment is not attached");
+        }
+
         InputStream inputStream = requireContext().getAssets().open(filename);
         int size = inputStream.available();
 
         byte[] buffer = new byte[size];
-        inputStream.read(buffer);
+        int bytesRead = inputStream.read(buffer);
         inputStream.close();
+
+        if (bytesRead <= 0) {
+            throw new IOException("Empty quiz file");
+        }
 
         return new String(buffer, StandardCharsets.UTF_8);
     }

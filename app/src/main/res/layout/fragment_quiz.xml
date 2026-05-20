@@ -46,10 +46,22 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tvQuizError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#FF6B6B"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/tvQuizResultTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="36dp"
             android:text="Quiz Result"
             android:textColor="#FFFFFF"
             android:textSize="22sp"

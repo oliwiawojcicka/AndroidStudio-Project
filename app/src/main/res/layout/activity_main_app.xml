@@ -12,6 +12,19 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <TextView
+        android:id="@+id/tvTabError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3A1C25"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text=""
+        android:textColor="#FF6B6B"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
