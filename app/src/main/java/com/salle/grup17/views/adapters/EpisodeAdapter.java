@@ -4,10 +4,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.salle.grup17.R;
+import com.salle.grup17.controllers.fragments.EpisodeDetailActivity;
 import com.salle.grup17.models.Episode;
 import java.util.List;
 
@@ -35,8 +35,13 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeV
         holder.textEpisodeAirDate.setText(episode.getAirDate() != null ? episode.getAirDate() : "Unknown Date");
 
         holder.itemView.setOnClickListener(v -> {
-            if (episode.getName() != null) {
-                Toast.makeText(v.getContext(), "Navigating to: " + episode.getName(), Toast.LENGTH_SHORT).show();
+            if (episode != null) {
+                android.content.Intent intent = new android.content.Intent(v.getContext(), EpisodeDetailActivity.class);
+                intent.putExtra("episode_name", episode.getName());
+                intent.putExtra("episode_code", episode.getEpisode());
+                intent.putExtra("episode_date", episode.getAirDate());
+                intent.putStringArrayListExtra("character_urls", new java.util.ArrayList<>(episode.getCharacters()));
+                v.getContext().startActivity(intent);
             }
         });
     }
