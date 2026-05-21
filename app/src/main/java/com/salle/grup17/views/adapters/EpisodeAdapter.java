@@ -1,0 +1,59 @@
+package com.salle.grup17.views.adapters;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import com.salle.grup17.R;
+import com.salle.grup17.models.Episode;
+import java.util.List;
+
+public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeViewHolder> {
+
+    private final List<Episode> episodeList;
+
+    public EpisodeAdapter(List<Episode> episodeList) {
+        this.episodeList = episodeList;
+    }
+
+    @NonNull
+    @Override
+    public EpisodeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_episode, parent, false);
+        return new EpisodeViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull EpisodeViewHolder holder, int position) {
+        Episode episode = episodeList.get(position);
+
+        holder.textEpisodeName.setText(episode.getName() != null ? episode.getName() : "Loading title...");
+        holder.textEpisodeCode.setText(episode.getEpisode() != null ? episode.getEpisode() : "S00E00");
+        holder.textEpisodeAirDate.setText(episode.getAirDate() != null ? episode.getAirDate() : "Unknown Date");
+
+        holder.itemView.setOnClickListener(v -> {
+            if (episode.getName() != null) {
+                Toast.makeText(v.getContext(), "Navigating to: " + episode.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return episodeList != null ? episodeList.size() : 0;
+    }
+
+    static class EpisodeViewHolder extends RecyclerView.ViewHolder {
+        TextView textEpisodeCode, textEpisodeName, textEpisodeAirDate;
+
+        public EpisodeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textEpisodeName = itemView.findViewById(R.id.textEpisodeName);
+            textEpisodeCode = itemView.findViewById(R.id.textEpisodeCode);
+            textEpisodeAirDate = itemView.findViewById(R.id.textEpisodeAirDate);
+        }
+    }
+}

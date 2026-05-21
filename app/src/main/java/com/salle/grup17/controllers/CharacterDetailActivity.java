@@ -15,8 +15,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.salle.grup17.R;
 import com.salle.grup17.api.RetrofitClient;
 import com.salle.grup17.models.Character;
+import com.salle.grup17.models.Episode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -31,6 +34,10 @@ public class CharacterDetailActivity extends AppCompatActivity {
     private Button backBtn;
     private Button favoriteBtn;
     private TextView tvStatusMessage;
+
+    private androidx.recyclerview.widget.RecyclerView episodesRecyclerView;
+    private com.salle.grup17.views.adapters.EpisodeAdapter episodeAdapter;
+    private List<Episode> episodeList;
 
     private FirebaseFirestore db;
     private FirebaseAuth auth;
@@ -50,6 +57,13 @@ public class CharacterDetailActivity extends AppCompatActivity {
         favoriteBtn = findViewById(R.id.favoriteBtn);
 
         tvStatusMessage = findViewById(R.id.tvStatusMessage);
+
+        episodesRecyclerView = findViewById(R.id.episodesRecyclerView);
+        episodesRecyclerView.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+
+        episodeList = new ArrayList<>();
+        episodeAdapter = new com.salle.grup17.views.adapters.EpisodeAdapter(episodeList);
+        episodesRecyclerView.setAdapter(episodeAdapter);
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -123,6 +137,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
                                     .into(detailImage);
 
                             checkIfFavorite();
+                            loadCharacterEpisodes(currentCharacter.getEpisodes());
 
                         } else {
                             showStatusMessage("API error");
@@ -247,5 +262,29 @@ public class CharacterDetailActivity extends AppCompatActivity {
         tvStatusMessage.removeCallbacks(null);
 
         tvStatusMessage.postDelayed(() -> tvStatusMessage.setVisibility(View.GONE), 2000);
+    }
+
+    private void loadCharacterEpisodes(List<String> episodeUrls) {
+        if (episodeUrls == null || episodeUrls.isEmpty()) return;
+        for (String url : episodeUrls) {
+            try {
+                String[] parts = url.split("/");
+                int episodeId = Integer.parseInt(parts[parts.length - 1]);
+                RetrofitClient.getApi().getEpisodeById(episodeId)
+                        .enqueue(new Callback<Episode>() {
+                            @Override
+                            public void onResponse(@NonNull Call<Episode> call, @NonNull Response<Episode> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    episodeList.add(response.body());
+                                    episodeAdapter.notifyItemInserted(episodeList.size() - 1);
+                                }
+                            }
+                            @Override
+                            public void onFailure(@NonNull Call<Episode> call, @NonNull Throwable t) {}
+                        });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

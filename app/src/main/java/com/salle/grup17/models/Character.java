@@ -1,5 +1,7 @@
 package com.salle.grup17.models;
 
+import java.util.List;
+
 public class Character {
     private int id;
     private String name;
@@ -10,6 +12,7 @@ public class Character {
     private String image;
     private Origin origin;
     private LocationInfo location;
+    private List<String> episode;
 
     public Character() {
     }
@@ -56,5 +59,9 @@ public class Character {
 
     public LocationInfo getLocation() {
         return location;
+    }
+
+    public List<String> getEpisodes() {
+        return episode;
     }
 }
