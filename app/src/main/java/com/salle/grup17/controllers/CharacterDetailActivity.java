@@ -55,7 +55,6 @@ public class CharacterDetailActivity extends AppCompatActivity {
         detailInfo = findViewById(R.id.detailInfo);
         backBtn = findViewById(R.id.backBtn);
         favoriteBtn = findViewById(R.id.favoriteBtn);
-
         tvStatusMessage = findViewById(R.id.tvStatusMessage);
 
         episodesRecyclerView = findViewById(R.id.episodesRecyclerView);
@@ -72,10 +71,9 @@ public class CharacterDetailActivity extends AppCompatActivity {
 
         favoriteBtn.setOnClickListener(v -> {
             if (currentCharacter == null) {
-                showStatusMessage("Character not loaded yet");
+                showStatusMessage(getString(R.string.error_char_not_loaded));
                 return;
             }
-
             if (isFavorite) {
                 removeFromFavorites();
             } else {
@@ -86,7 +84,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
         int characterId = getIntent().getIntExtra("character_id", -1);
 
         if (characterId == -1) {
-            showStatusMessage("Character ID error");
+            showStatusMessage(getString(R.string.error_char_id));
             tvStatusMessage.postDelayed(this::finish, 1500);
             return;
         }
@@ -109,26 +107,26 @@ public class CharacterDetailActivity extends AppCompatActivity {
 
                             String type = currentCharacter.getType();
                             if (type == null || type.isEmpty()) {
-                                type = "Unknown";
+                                type = getString(R.string.unknown);
                             }
 
-                            String originName = "Unknown";
+                            String originName = getString(R.string.unknown);
                             if (currentCharacter.getOrigin() != null && currentCharacter.getOrigin().getName() != null) {
                                 originName = currentCharacter.getOrigin().getName();
                             }
 
-                            String locationName = "Unknown";
+                            String locationName = getString(R.string.unknown);
                             if (currentCharacter.getLocation() != null && currentCharacter.getLocation().getName() != null) {
                                 locationName = currentCharacter.getLocation().getName();
                             }
 
                             String info =
-                                    "Status: " + currentCharacter.getStatus() + "\n" +
-                                            "Species: " + currentCharacter.getSpecies() + "\n" +
-                                            "Type: " + type + "\n" +
-                                            "Gender: " + currentCharacter.getGender() + "\n" +
-                                            "Origin: " + originName + "\n" +
-                                            "Location: " + locationName;
+                                    getString(R.string.info_status) + currentCharacter.getStatus() + "\n" +
+                                            getString(R.string.info_species) + currentCharacter.getSpecies() + "\n" +
+                                            getString(R.string.info_type) + type + "\n" +
+                                            getString(R.string.info_gender) + currentCharacter.getGender() + "\n" +
+                                            getString(R.string.info_origin) + originName + "\n" +
+                                            getString(R.string.info_location) + locationName;
 
                             detailInfo.setText(info);
 
@@ -140,7 +138,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
                             loadCharacterEpisodes(currentCharacter.getEpisodes());
 
                         } else {
-                            showStatusMessage("API error");
+                            showStatusMessage(getString(R.string.error_api));
                         }
                     }
 
@@ -149,7 +147,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
                             @NonNull Call<Character> call,
                             @NonNull Throwable t
                     ) {
-                        showStatusMessage("Connection error: " + t.getMessage());
+                        showStatusMessage(getString(R.string.error_connection_prefix) + t.getMessage());
                     }
                 });
     }
@@ -178,7 +176,6 @@ public class CharacterDetailActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     favoriteBtn.setEnabled(true);
-
                     if (task.isSuccessful() && task.getResult() != null) {
                         isFavorite = task.getResult().exists();
                         updateFavoriteButton();
@@ -190,7 +187,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
         String userId = getUserId();
 
         if (userId == null) {
-            showStatusMessage("User not logged in");
+            showStatusMessage(getString(R.string.error_not_logged_in));
             return;
         }
 
@@ -212,11 +209,11 @@ public class CharacterDetailActivity extends AppCompatActivity {
                     isFavorite = true;
                     updateFavoriteButton();
                     favoriteBtn.setEnabled(true);
-                    showStatusMessage("Added"); // <--- Zmiana na "Added"
+                    showStatusMessage(getString(R.string.msg_added));
                 })
                 .addOnFailureListener(e -> {
                     favoriteBtn.setEnabled(true);
-                    showStatusMessage("Error adding favorite");
+                    showStatusMessage(getString(R.string.error_adding_favorite));
                 });
     }
 
@@ -224,7 +221,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
         String userId = getUserId();
 
         if (userId == null) {
-            showStatusMessage("User not logged in");
+            showStatusMessage(getString(R.string.error_not_logged_in));
             return;
         }
 
@@ -239,28 +236,26 @@ public class CharacterDetailActivity extends AppCompatActivity {
                     isFavorite = false;
                     updateFavoriteButton();
                     favoriteBtn.setEnabled(true);
-                    showStatusMessage("Deleted"); // <--- Zmiana na "Deleted"
+                    showStatusMessage(getString(R.string.msg_deleted));
                 })
                 .addOnFailureListener(e -> {
                     favoriteBtn.setEnabled(true);
-                    showStatusMessage("Error removing favorite");
+                    showStatusMessage(getString(R.string.error_removing_favorite));
                 });
     }
 
     private void updateFavoriteButton() {
         if (isFavorite) {
-            favoriteBtn.setText("Remove from favorites");
+            favoriteBtn.setText(getString(R.string.remove_from_favorites));
         } else {
-            favoriteBtn.setText("Add to favorites");
+            favoriteBtn.setText(getString(R.string.add_to_favorites));
         }
     }
-
 
     private void showStatusMessage(String message) {
         tvStatusMessage.setText(message);
         tvStatusMessage.setVisibility(View.VISIBLE);
         tvStatusMessage.removeCallbacks(null);
-
         tvStatusMessage.postDelayed(() -> tvStatusMessage.setVisibility(View.GONE), 2000);
     }
 

@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="16dp"
-            android:text="Back" />
+            android:text="@string/back" />
 
         <ImageView
             android:id="@+id/detailImage"
@@ -30,7 +30,7 @@
             android:id="@+id/detailName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name"
+            android:text="@string/loading"
             android:textSize="26sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -41,7 +41,7 @@
             android:id="@+id/detailInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Info"
+            android:text="@string/info"
             android:textSize="18sp"
             android:textColor="#FFFFFF" />
 
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Add to favorites" />
+            android:text="@string/add_to_favorites" />
 
         <TextView
             android:id="@+id/tvStatusMessage"
@@ -67,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Episodes"
+            android:text="@string/episodes_title"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" />

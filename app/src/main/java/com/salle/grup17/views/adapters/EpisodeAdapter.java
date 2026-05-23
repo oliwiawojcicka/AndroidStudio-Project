@@ -29,10 +29,19 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeV
     @Override
     public void onBindViewHolder(@NonNull EpisodeViewHolder holder, int position) {
         Episode episode = episodeList.get(position);
+        android.content.Context context = holder.itemView.getContext();
 
-        holder.textEpisodeName.setText(episode.getName() != null ? episode.getName() : "Loading title...");
-        holder.textEpisodeCode.setText(episode.getEpisode() != null ? episode.getEpisode() : "S00E00");
-        holder.textEpisodeAirDate.setText(episode.getAirDate() != null ? episode.getAirDate() : "Unknown Date");
+        holder.textEpisodeName.setText(episode.getName() != null ?
+                episode.getName() :
+                context.getString(R.string.loading_title));
+
+        holder.textEpisodeCode.setText(episode.getEpisode() != null ?
+                episode.getEpisode() :
+                context.getString(R.string.default_episode_code));
+
+        holder.textEpisodeAirDate.setText(episode.getAirDate() != null ?
+                episode.getAirDate() :
+                context.getString(R.string.unknown_date));
 
         holder.itemView.setOnClickListener(v -> {
             if (episode != null) {
