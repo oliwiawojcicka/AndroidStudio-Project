@@ -57,27 +57,32 @@ public class EpisodeDetailActivity extends AppCompatActivity {
     private void loadEpisodeCharacters(List<String> urls) {
         if (urls == null || urls.isEmpty()) return;
 
-        for (String url : urls) {
-            try {
-                String[] parts = url.split("/");
-                int characterId = Integer.parseInt(parts[parts.length - 1]);
+        for (int i = 0; i < urls.size(); i++) {
+            String url = urls.get(i);
+            long delay = i * 100L;
 
-                RetrofitClient.getApi().getCharacterById(characterId)
-                        .enqueue(new Callback<Character>() {
-                            @Override
-                            public void onResponse(@NonNull Call<Character> call, @NonNull Response<Character> response) {
-                                if (response.isSuccessful() && response.body() != null) {
-                                    characterList.add(response.body());
-                                    characterAdapter.notifyItemInserted(characterList.size() - 1);
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                try {
+                    String[] parts = url.split("/");
+                    int characterId = Integer.parseInt(parts[parts.length - 1]);
+
+                    RetrofitClient.getApi().getCharacterById(characterId)
+                            .enqueue(new Callback<Character>() {
+                                @Override
+                                public void onResponse(@NonNull Call<Character> call, @NonNull Response<Character> response) {
+                                    if (response.isSuccessful() && response.body() != null) {
+                                        characterList.add(response.body());
+                                        characterAdapter.notifyItemInserted(characterList.size() - 1);
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(@NonNull Call<Character> call, @NonNull Throwable t) {}
-                        });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+                                @Override
+                                public void onFailure(@NonNull Call<Character> call, @NonNull Throwable t) {}
+                            });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }, delay);
         }
     }
 }

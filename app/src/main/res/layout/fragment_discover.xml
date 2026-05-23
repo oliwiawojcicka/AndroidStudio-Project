@@ -8,7 +8,7 @@
     android:paddingEnd="12dp"
     android:paddingTop="36dp"
     android:paddingBottom="12dp"
-    android:background="#0F172A">
+    android:background="#101123">
 
     <TextView
         android:id="@+id/discover_header"
