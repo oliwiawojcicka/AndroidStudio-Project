@@ -93,6 +93,11 @@ public class CharacterDetailActivity extends AppCompatActivity {
     }
 
     private void loadCharacter(int id) {
+
+        detailName.setText(getString(R.string.loading));
+        detailInfo.setText(getString(R.string.loading));
+        favoriteBtn.setEnabled(false);
+
         RetrofitClient.getApi().getCharacterById(id)
                 .enqueue(new Callback<Character>() {
                     @Override
@@ -102,6 +107,7 @@ public class CharacterDetailActivity extends AppCompatActivity {
                     ) {
                         if (response.isSuccessful() && response.body() != null) {
                             currentCharacter = response.body();
+                            favoriteBtn.setEnabled(true);
 
                             detailName.setText(currentCharacter.getName());
 
@@ -138,7 +144,15 @@ public class CharacterDetailActivity extends AppCompatActivity {
                             loadCharacterEpisodes(currentCharacter.getEpisodes());
 
                         } else {
-                            showStatusMessage(getString(R.string.error_api));
+                            if (response.code() == 429) {
+                                // Rate limited, wait 1 second and retry
+                                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                                    loadCharacter(id);
+                                }, 1000);
+                            } else {
+                                detailName.setText(getString(R.string.error_api));
+                                detailInfo.setText(getString(R.string.error_server) + response.code());
+                            }
                         }
                     }
 
@@ -147,7 +161,8 @@ public class CharacterDetailActivity extends AppCompatActivity {
                             @NonNull Call<Character> call,
                             @NonNull Throwable t
                     ) {
-                        showStatusMessage(getString(R.string.error_connection_prefix) + t.getMessage());
+                        detailName.setText(getString(R.string.error_connection));
+                        detailInfo.setText(getString(R.string.error_connection_prefix) + t.getMessage());
                     }
                 });
     }
