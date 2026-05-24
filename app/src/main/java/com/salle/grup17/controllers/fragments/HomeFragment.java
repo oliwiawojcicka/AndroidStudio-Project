@@ -57,8 +57,6 @@ public class HomeFragment extends Fragment {
 
         searchEditText = view.findViewById(R.id.searchEditText);
         charactersRecyclerView = view.findViewById(R.id.charactersRecyclerView);
-
-        // Podpinamy nasz napis z XML
         tvNoResults = view.findViewById(R.id.tvNoResults);
 
         layoutManager = new LinearLayoutManager(requireContext());
@@ -189,7 +187,6 @@ public class HomeFragment extends Fragment {
             ) {
                 isLoading = false;
 
-                // Brak internetu - też zamieniamy dawny Toast na nasz napis!
                 if (characterList.isEmpty()) {
                     showEmptyState("Connection error");
                 }

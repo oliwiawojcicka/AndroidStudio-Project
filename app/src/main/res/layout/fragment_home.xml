@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:hint="Search character"
+        android:hint="@string/hint_search_character"
         android:textColor="@android:color/white"
         android:textColorHint="#9E9E9E"
         android:background="#1E1E2F"
@@ -24,7 +24,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Characters"
+        android:text="@string/title_characters"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -36,12 +36,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
     <TextView
         android:id="@+id/tvNoResults"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="No characters found"
+        android:text="@string/no_characters_found"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold"

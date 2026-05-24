@@ -91,4 +91,10 @@
     <string name="unknown_date">Unknown Date</string>
     <string name="discover_title">Discover</string>
     <string name="no_locations_found">No locations found</string>
+
+    <string name="title_favorites">Favorites</string>
+    <string name="title_characters">Characters</string>
+    <string name="hint_search_character">Search character</string>
+    <string name="no_characters_found">No characters found</string>
+
 </resources>
